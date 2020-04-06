@@ -259,7 +259,7 @@ function App() {
         className=" btn-right btn-close"
         onClick={() => changeStep(false)}
       >
-        X
+        <i className="fa fa-times" />
       </button>
     );
   }
