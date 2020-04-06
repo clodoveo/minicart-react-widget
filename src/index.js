@@ -106,7 +106,7 @@ function App() {
   if (paymentType === "paypal" && step === 3) {
     view = (
       <div className="paypal">
-        <h3>paga ora:</h3>
+        <h3>Paga ora:</h3>
         <PayPalButton
           amount={calculatePrice()}
           // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
@@ -142,7 +142,7 @@ function App() {
           <input type="email" name="noteContanti" />
         </p>
         <button className="btn btn-invia" type="submit">
-          INVIA ORDINE
+          Invia ordine
         </button>
       </div>
     );
@@ -163,7 +163,7 @@ function App() {
           </label>
         </p>
         <button className="btn btn-invia" type="submit">
-          INVIA ORDINE
+          Invia ordine
         </button>
       </div>
     );
@@ -201,7 +201,7 @@ function App() {
           }}
           type="submit"
         >
-          PROCEDI
+          Procedi
         </button>
       </div>
     );
@@ -209,16 +209,18 @@ function App() {
   if (step === 2) {
     view = (
       <p>
-        paga ora:
-        <button className="btn" onClick={() => goToPaypal()}>
-          paypal
-        </button>
-        <button className="btn" onClick={() => goToBonifico()}>
-          Bonifico
-        </button>
-        <button className="btn" onClick={() => goTocash()}>
-          alla consegna in contanti
-        </button>
+        Metodo pagamento:
+        <div className="btn-pagaora">
+          <button className="btn" onClick={() => goToPaypal()}>
+            Paypal
+          </button>
+          <button className="btn" onClick={() => goToBonifico()}>
+            Bonifico
+          </button>
+          <button className="btn" onClick={() => goTocash()}>
+            Contanti
+          </button>
+        </div>
       </p>
     );
   }
@@ -248,7 +250,7 @@ function App() {
   if (step === 0) {
     bottoneTotaleProcedi = (
       <button className="btn btn-right" onClick={() => changeStep(true)}>
-        PROCEDI
+        Procedi
       </button>
     );
   } else {
@@ -257,7 +259,7 @@ function App() {
         className=" btn-right btn-close"
         onClick={() => changeStep(false)}
       >
-        X
+        <i className="fa fa-times" />
       </button>
     );
   }
@@ -269,6 +271,7 @@ function App() {
           <span className="tot-price">€ {calculatePrice()}</span>
         </div>
         {bottoneTotaleProcedi}
+        <div className="clear" />
         {view}
       </div>
     );
