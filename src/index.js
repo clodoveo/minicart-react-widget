@@ -106,7 +106,7 @@ function App() {
   if (paymentType === "paypal" && step === 3) {
     view = (
       <div className="paypal">
-        <h3>paga ora:</h3>
+        <h3>Paga ora:</h3>
         <PayPalButton
           amount={calculatePrice()}
           // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
@@ -209,7 +209,9 @@ function App() {
   if (step === 2) {
     view = (
       <p>
-        paga ora:
+
+        Metodo pagamento:
+
         <div className="btn-pagaora">
           <button className="btn" onClick={() => goToPaypal()}>
             Paypal

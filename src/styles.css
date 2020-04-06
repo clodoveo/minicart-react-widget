@@ -79,8 +79,10 @@ h5 {
 }
 .btn,
 .btn:focus {
-  min-width: 150px;
-  padding: 10px 20px;
+
+  width: 100%;
+  padding: 12px 20px;
+
   border-radius: 50px;
   font-size: 16px;
   border: none;
@@ -106,7 +108,13 @@ h5 {
   border: none;
   color: #fff;
   font-size: 25px;
-  font-weight: bold;
+  font-weight: 300;
+}
+.btn-pagaora {
+  padding: 10px 0 0;
+}
+.btn-pagaora .btn {
+  margin: 5px 0;
 }
 
 .appFooter {
