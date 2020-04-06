@@ -209,9 +209,7 @@ function App() {
   if (step === 2) {
     view = (
       <p>
-
         Metodo pagamento:
-
         <div className="btn-pagaora">
           <button className="btn" onClick={() => goToPaypal()}>
             Paypal
@@ -295,7 +293,6 @@ function App() {
         })}
       </div>
       {totale}
-      {view}
     </div>
   );
 }
