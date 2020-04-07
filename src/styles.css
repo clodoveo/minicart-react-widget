@@ -1,11 +1,10 @@
-@import "" "http://minicart.it/assets/minicart-widget/css/cleanslate.css ";
 h1 {
   margin: 0;
   padding: 30px 0 0;
 }
 h2 {
   font-weight: 600;
-  color: #242e49;
+  color: #6f6a60;
   margin: 5px 0 25px;
 }
 h5 {
@@ -17,9 +16,8 @@ h5 {
 .App {
   font-family: "Nunito", sans-serif;
   text-align: center;
-  color: #333;
-  color: #6f7995;
-  background: #f7fafd;
+  color: #666;
+  background: #f9f6f3;
   height: 100vh;
   max-width: 800px;
   margin: 0 auto;
@@ -37,14 +35,15 @@ h5 {
   /*border-bottom: 1px solid #f2f5f7;*/
   position: relative;
   background: #fff;
+  border-radius: 3px;
 }
 .prices {
   font-size: 20px;
   font-weight: 600;
-  color: #242e49;
+  color: #6f6a60;
 }
 .add {
-  background-color: #026cdf;
+  background-color: #f05323;
   border: none;
   padding: 10px;
   color: #fff;
@@ -52,9 +51,10 @@ h5 {
   height: 35px;
   border-radius: 50%;
   font-weight: 600;
+  outline: none;
 }
 .remove {
-  background-color: #026cdf;
+  background-color: #f05323;
   border: none;
   padding: 10px;
   color: #fff;
@@ -62,6 +62,7 @@ h5 {
   height: 35px;
   border-radius: 50%;
   font-weight: 600;
+  outline: none;
 }
 .description {
   color: rgb(58, 22, 22);
@@ -79,19 +80,18 @@ h5 {
 }
 .btn,
 .btn:focus {
-
   width: 100%;
   padding: 12px 20px;
-
   border-radius: 50px;
   font-size: 16px;
   border: none;
   background: #fff;
-  color: #026cdf;
+  color: #f05323;
   margin: 5px;
   font-weight: 600;
   outline: none;
 }
+
 .btnConferma {
   background-color: #026cdf;
   border: none;
@@ -109,6 +109,7 @@ h5 {
   color: #fff;
   font-size: 25px;
   font-weight: 300;
+  outline: none;
 }
 .btn-pagaora {
   padding: 10px 0 0;
@@ -124,7 +125,7 @@ h5 {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  background-color: #026cdf;
+  background-color: #f05323;
   color: #fff;
   text-align: left;
   padding: 20px;
@@ -149,7 +150,7 @@ h5 {
   font-size: 15px;
   padding: 5px;
   border: none;
-  border-bottom: 1px solid #ffffff35;
+  border-bottom: 1px solid #ffffff45;
   background: none;
   color: #fff;
 }
