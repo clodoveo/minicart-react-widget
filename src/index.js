@@ -153,8 +153,7 @@ function App() {
         <p>
           <label>
             <p>
-              L'ordine è stato inoltrato . la preghiamo di effettuare il
-              pagamento al seguente IBAN:
+              la preghiamo di effettuare il pagamento al seguente IBAN:
               <strong>IT1234567891011</strong>
             </p>
             <p>
