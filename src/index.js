@@ -83,7 +83,8 @@ function App() {
     indirizzo: "",
     email: "",
     telefono: "",
-    note: ""
+    note: "",
+    banconote: ""
   };
 
   const [settings, setSettings] = useState({});
@@ -166,7 +167,8 @@ function App() {
       "https://minicart.it/api/ordini/new/" + pv + "/",
       {
         menu: menu,
-        userdata: userdata
+        userdata: userdata,
+        paymentType: paymentType
       }
     );
     const result = await res;
@@ -193,16 +195,10 @@ function App() {
 
             // console.log(menu);
             // OPTIONAL: Call your server to save the transaction
-            postData(
-              "https://www.le-papere.it/api/ordini/callback/",
-              menu
-            ).then(data => {
-              console.log(data.json()); // JSON data parsed by `response.json()` call
-            });
+            inviaOrdine();
           }}
           options={{
-            clientId:
-              "AfRvw-D30X1sihKsA7qoh6Hqd31XZh4rH3wmb41J9g7HLgJ0w2MCsG2nAxuPrLcGIyjHhHhYW6ZEBV-W",
+            clientId: settings.paypal,
             currency: "EUR"
           }}
         />
@@ -217,7 +213,14 @@ function App() {
             per faicilitare il resto dimmi con che talgi di banconote paghi (es:
             50 €):
           </label>
-          <input type="email" name="noteContanti" />
+          <input
+            type="email"
+            name="banconote"
+            value={userdata.banconote}
+            onChange={e => {
+              setUserdata({ ...userdata, banconote: e.target.value });
+            }}
+          />
         </p>
         <button className="btn btn-invia" type="submit" onClick={inviaOrdine}>
           Invia ordine
@@ -239,7 +242,7 @@ function App() {
             </p>
           </label>
         </>
-        <button className="btn btn-invia" type="submit">
+        <button className="btn btn-invia" type="submit" onClick={inviaOrdine}>
           Invia ordine
         </button>
       </div>
@@ -256,6 +259,7 @@ function App() {
               <input
                 type="text"
                 name="nome"
+                required
                 value={userdata.nome}
                 onChange={e => {
                   setUserdata({ ...userdata, nome: e.target.value });
@@ -267,6 +271,7 @@ function App() {
               <input
                 type="text"
                 name="indirizzo"
+                required
                 value={userdata.indirizzo}
                 onChange={e => {
                   setUserdata({ ...userdata, indirizzo: e.target.value });
@@ -278,6 +283,7 @@ function App() {
               <input
                 type="tel"
                 name="telefono"
+                required
                 value={userdata.telefono}
                 onChange={e => {
                   setUserdata({ ...userdata, telefono: e.target.value });
@@ -289,6 +295,7 @@ function App() {
               <input
                 type="email"
                 name="email"
+                required
                 value={userdata.email}
                 onChange={e => {
                   setUserdata({ ...userdata, email: e.target.value });
@@ -380,6 +387,29 @@ function App() {
             Grazie il tuo ordine è stato inoltrato
           </p>
           <p>Riceverai una emai di conferma</p>
+        </div>
+      </div>
+    );
+  }
+  if (success === -1) {
+    totale = (
+      <div className="appFooter">
+        <div className="clear" />
+        <div className="success">
+          <div className="success-icon-container animated tada error">
+            <i className="fa fa-times" />
+          </div>
+          <p className="testo-scuccess">C'è stato un problema</p>
+          <p>: (</p>
+          <button
+            className="btn"
+            onClick={() => {
+              setSuccess(0);
+              changeStep(false);
+            }}
+          >
+            Indietro
+          </button>
         </div>
       </div>
     );

@@ -203,3 +203,6 @@ label {
   margin: 10px auto;
   margin-bottom: 30px;
 }
+.success-icon-container.error {
+  color: red;
+}
