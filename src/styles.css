@@ -184,3 +184,22 @@ label {
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.logo {
+  max-height: 100px;
+}
+.success {
+  text-align: center;
+}
+.success-icon-container {
+  background-color: #fff;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  font-size: 75px;
+  line-height: 150px;
+  text-align: center;
+  color: #34a937;
+  margin: 10px auto;
+  margin-bottom: 30px;
+}

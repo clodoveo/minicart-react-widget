@@ -3,6 +3,20 @@ import ReactDOM from "react-dom";
 import { PayPalButton } from "react-paypal-button-v2";
 import "./styles.css";
 
+const getParameterByName = (name, url) => {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return "";
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+};
+
+// prendo il puntovendita da url
+const pv = getParameterByName("pv") ? getParameterByName("pv") : "2";
+//console.log(pv);
+
 const Lista = props => {
   const { product, f } = props;
   let removeBt = "";
@@ -39,8 +53,16 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
+        const settings = await fetch(
+          "https://minicart.it/api/ordini/settings/" + pv + "/"
+        );
+
+        const jsonSettings = await settings.json();
+
+        setSettings(jsonSettings);
+
         const response = await fetch(
-          "https://www.le-papere.it/api/ordini/menu/"
+          "https://minicart.it/api/ordini/menu/" + pv + "/"
         );
         const json = await response.json();
         // setPosts(json.data.children.map(it => it.data));
@@ -56,16 +78,27 @@ function App() {
     fetchData();
   }, []);
 
+  const emtyForm = {
+    nome: "",
+    indirizzo: "",
+    email: "",
+    telefono: "",
+    note: ""
+  };
+
+  const [settings, setSettings] = useState({});
   const [menu, setMenu] = useState([]);
   const [paymentType, setPaymentType] = useState("");
   const [step, setStep] = useState(0);
+  const [userdata, setUserdata] = useState(emtyForm);
+  const [success, setSuccess] = useState(0);
 
   const addToCart = index => {
     let newCart = menu.map(p => {
       //console.log(index);
       return p.ID === index ? { ...p, q: p.q + 1 } : p;
     });
-    console.log(newCart);
+    //console.log(newCart);
     setMenu(newCart);
   };
   const removeToCart = index => {
@@ -100,6 +133,51 @@ function App() {
     setPaymentType("bonifico");
   };
 
+  const handleSubmit = evt => {
+    evt.preventDefault();
+    changeStep(true);
+    console.log(userdata);
+  };
+  const postData = async (url = "", data = {}) => {
+    // Default options are marked with *
+    const fd = new FormData();
+    fd.append("data", JSON.stringify(data));
+    //console.log(JSON.stringify(data));
+    const response = await fetch(url, {
+      method: "POST", // *GET, POST, PUT, DELETE, etc.
+      mode: "cors", // no-cors, *cors, same-origin
+      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+      credentials: "omit", // include, *same-origin, omit
+      headers: {
+        "Content-Type": "application/json"
+
+        //"Content-Type": "application/x-www-form-urlencoded"
+        //"Content-Type": "multipart/form-data"
+      },
+      redirect: "follow", // manual, *follow, error
+      referrerPolicy: "no-referrer", // no-referrer, *client
+      body: JSON.stringify(data) //fd //objectToFormData(data) // body data type must match "Content-Type" header
+    });
+    const dati = await response.json();
+    return dati;
+  };
+  const inviaOrdine = async () => {
+    const res = await postData(
+      "https://minicart.it/api/ordini/new/" + pv + "/",
+      {
+        menu: menu,
+        userdata: userdata
+      }
+    );
+    const result = await res;
+    //console.log(result);
+    if (result.success === true) {
+      setSuccess(1);
+    } else {
+      setSuccess(-1);
+    }
+  };
+
   let totale = "";
   let view = "";
 
@@ -113,13 +191,13 @@ function App() {
           onSuccess={(details, data) => {
             //alert("Transaction completed by " + details.payer.name.given_name);
 
-            console.log(menu);
+            // console.log(menu);
             // OPTIONAL: Call your server to save the transaction
             postData(
               "https://www.le-papere.it/api/ordini/callback/",
               menu
             ).then(data => {
-              console.log(data); // JSON data parsed by `response.json()` call
+              console.log(data.json()); // JSON data parsed by `response.json()` call
             });
           }}
           options={{
@@ -141,7 +219,7 @@ function App() {
           </label>
           <input type="email" name="noteContanti" />
         </p>
-        <button className="btn btn-invia" type="submit">
+        <button className="btn btn-invia" type="submit" onClick={inviaOrdine}>
           Invia ordine
         </button>
       </div>
@@ -150,7 +228,7 @@ function App() {
   if (paymentType === "bonifico" && step === 3) {
     view = (
       <div>
-        <p>
+        <>
           <label>
             <p>
               la preghiamo di effettuare il pagamento al seguente IBAN:
@@ -160,7 +238,7 @@ function App() {
               La spedizione avverà nelle 24 ore dalla ricezione del pagamento
             </p>
           </label>
-        </p>
+        </>
         <button className="btn btn-invia" type="submit">
           Invia ordine
         </button>
@@ -171,43 +249,79 @@ function App() {
   if (step === 1) {
     view = (
       <div>
-        <div className="form">
-          <p>
-            <label>Nome:</label>
-            <input type="text" name="nome" />
-          </p>
-          <p>
-            <label>Indirizzo:</label>
-            <input type="text" name="indirizzo" />
-          </p>
-          <p>
-            <label>Telefono:</label>
-            <input type="tel" name="telefono" />
-          </p>
-          <p>
-            <label>Email:</label>
-            <input type="email" name="email" />
-          </p>
-          <p>
-            <label>NOTE :</label>
-            <textarea name="note" />
-          </p>
-        </div>
-        <button
-          className="btn btn-right"
-          onClick={() => {
-            changeStep(true);
-          }}
-          type="submit"
-        >
-          Procedi
-        </button>
+        <form onSubmit={handleSubmit}>
+          <div className="form">
+            <p>
+              <label>Nome:</label>
+              <input
+                type="text"
+                name="nome"
+                value={userdata.nome}
+                onChange={e => {
+                  setUserdata({ ...userdata, nome: e.target.value });
+                }}
+              />
+            </p>
+            <p>
+              <label>Indirizzo:</label>
+              <input
+                type="text"
+                name="indirizzo"
+                value={userdata.indirizzo}
+                onChange={e => {
+                  setUserdata({ ...userdata, indirizzo: e.target.value });
+                }}
+              />
+            </p>
+            <p>
+              <label>Telefono:</label>
+              <input
+                type="tel"
+                name="telefono"
+                value={userdata.telefono}
+                onChange={e => {
+                  setUserdata({ ...userdata, telefono: e.target.value });
+                }}
+              />
+            </p>
+            <p>
+              <label>Email:</label>
+              <input
+                type="email"
+                name="email"
+                value={userdata.email}
+                onChange={e => {
+                  setUserdata({ ...userdata, email: e.target.value });
+                }}
+              />
+            </p>
+            <p>
+              <label>NOTE :</label>
+              <textarea
+                name="note"
+                onChange={e => {
+                  setUserdata({ ...userdata, note: e.target.value });
+                }}
+                value={userdata.note}
+              />
+            </p>
+          </div>
+          <button
+            className="btn btn-right"
+            onClick={() => {
+              // changeStep(true);
+            }}
+            type="submit"
+          >
+            Procedi
+          </button>
+        </form>
       </div>
     );
   }
   if (step === 2) {
     view = (
-      <p>
+      <>
         Metodo pagamento:
         <div className="btn-pagaora">
           <button className="btn" onClick={() => goToPaypal()}>
@@ -220,30 +334,9 @@ function App() {
             Contanti
           </button>
         </div>
-      </p>
+      </>
     );
   }
-  const postData = async (url = "", data = {}) => {
-    // Default options are marked with *
-    const fd = new FormData();
-    fd.append("data", JSON.stringify(menu));
-    const response = await fetch(url, {
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "no-cors", // no-cors, *cors, same-origin
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "omit", // include, *same-origin, omit
-      headers: {
-        "Content-Type": "application/json"
-
-        //"Content-Type": "application/x-www-form-urlencoded"
-        //"Content-Type": "multipart/form-data"
-      },
-      redirect: "follow", // manual, *follow, error
-      referrerPolicy: "no-referrer", // no-referrer, *client
-      body: fd //objectToFormData(data) // body data type must match "Content-Type" header
-    });
-    return response;
-  };
 
   let bottoneTotaleProcedi = "";
   if (step === 0) {
@@ -275,10 +368,32 @@ function App() {
       </div>
     );
   }
+  if (success === 1) {
+    totale = (
+      <div className="appFooter">
+        <div className="clear" />
+        <div className="success">
+          <div className="success-icon-container animated tada">
+            <i className="fa fa-check" />
+          </div>
+          <p className="testo-scuccess">
+            Grazie il tuo ordine è stato inoltrato
+          </p>
+          <p>Riceverai una emai di conferma</p>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="App">
-      <h1>YOUR LOGO HERE</h1>
-      <h2>Smart commerce looks great</h2>
+      <h1>
+        <img
+          className="logo"
+          alt={settings.title}
+          src={`https://minicart.it/img/original/${settings.logo}`}
+        />
+      </h1>
+      <h2>{settings.motto}</h2>
 
       <div className="productContainer">
         {menu.map((item, index2) => {
