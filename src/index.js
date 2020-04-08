@@ -235,7 +235,7 @@ function App() {
           <label>
             <p>
               la preghiamo di effettuare il pagamento al seguente IBAN:
-              <strong>IT1234567891011</strong>
+              <strong>{settings.testo_bonifico}</strong>
             </p>
             <p>
               La spedizione avverà nelle 24 ore dalla ricezione del pagamento
