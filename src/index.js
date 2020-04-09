@@ -419,27 +419,29 @@ function App() {
   }
   return (
     <div className="App">
-      <h1>
-        <img
-          className="logo"
-          alt={settings.title}
-          src={`https://minicart.it/img/original/${settings.logo}`}
-        />
-      </h1>
-      <h2>{settings.motto}</h2>
+      <div className="appContainer">
+        <h1>
+          <img
+            className="logo"
+            alt={settings.title}
+            src={`https://minicart.it/img/original/${settings.logo}`}
+          />
+        </h1>
+        <h2>{settings.motto}</h2>
 
-      <div className="productContainer">
-        {menu.map((item, index2) => {
-          return (
-            <Lista
-              key={item.ID}
-              product={item}
-              f={{ addToCart, removeToCart }}
-            />
-          );
-        })}
+        <div className="productContainer">
+          {menu.map((item, index2) => {
+            return (
+              <Lista
+                key={item.ID}
+                product={item}
+                f={{ addToCart, removeToCart }}
+              />
+            );
+          })}
+        </div>
+        {totale}
       </div>
-      {totale}
     </div>
   );
 }

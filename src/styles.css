@@ -17,10 +17,13 @@ h5 {
   font-family: "Nunito", sans-serif;
   text-align: center;
   color: #666;
-  background: #f9f6f3;
+
   height: 100vh;
   max-width: 800px;
   margin: 0 auto;
+}
+.appContainer {
+  background: #f9f6f3;
 }
 .clearer {
   clear: both;
@@ -146,6 +149,7 @@ h5 {
   height: 45vh;
   overflow-y: scroll;
   overflow-x: hidden;
+  padding-right: 15px;
 }
 .appFooter input,
 .appFooter textarea {
@@ -158,9 +162,11 @@ h5 {
   color: #fff;
 }
 .appFooter input:focus,
-.appFooter input:active {
-  border: none;
-  border-bottom: 1px solid #fff;
+.appFooter input:active,
+.appFooter textarea:focus,
+.appFooter textarea:active {
+  border: 1px solid #fff;
+  outline: none;
 }
 
 label {
