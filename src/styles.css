@@ -44,22 +44,24 @@ h5 {
 }
 .add {
   background-color: #f05323;
+  font-size: 12px;
   border: none;
   padding: 10px;
   color: #fff;
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   font-weight: 600;
   outline: none;
 }
 .remove {
   background-color: #f05323;
+  font-size: 12px;
   border: none;
   padding: 10px;
   color: #fff;
-  width: 35px;
-  height: 35px;
+  width: 45px;
+  height: 45px;
   border-radius: 50%;
   font-weight: 600;
   outline: none;
@@ -69,14 +71,15 @@ h5 {
 }
 .indicator {
   display: inline-block;
-  font-size: 25px;
-  width: 50px;
+  font-size: 19px;
+  width: 35px;
   text-align: center;
+  font-weight: 600;
 }
 .buttons {
   position: absolute;
   right: 10px;
-  top: 10px;
+  top: 15px;
 }
 .btn,
 .btn:focus {
@@ -205,4 +208,10 @@ label {
 }
 .success-icon-container.error {
   color: red;
+}
+.product-title {
+  width: calc(100% - 35px);
+}
+.product-title.open {
+  width: calc(100% - 120px);
 }

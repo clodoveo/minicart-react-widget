@@ -20,23 +20,26 @@ const pv = getParameterByName("pv") ? getParameterByName("pv") : "3";
 const Lista = props => {
   const { product, f } = props;
   let removeBt = "";
+  let openClass = "";
   if (product.q > 0) {
     removeBt = (
       <button className="remove" onClick={() => f.removeToCart(product.ID)}>
-        -
+        <i className="fa fa-minus" />
       </button>
     );
+    openClass = "open";
   }
 
   return (
     <div className="products">
-      {product.title} <div className="prices">€ {product.prezzo}</div>
+      <p className={"product-title " + openClass}>{product.title}</p>{" "}
+      <div className="prices">€ {product.prezzo}</div>
       <div className="description">{product.descrizione}</div>
       <div className="buttons">
         {removeBt}
         <Indicator q={product.q}> </Indicator>
         <button className="add" onClick={() => f.addToCart(product.ID)}>
-          +
+          <i className="fa fa-plus" />
         </button>
       </div>
       <div className="clearer" />
