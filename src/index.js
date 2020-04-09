@@ -14,7 +14,7 @@ const getParameterByName = (name, url) => {
 };
 
 // prendo il puntovendita da url
-const pv = getParameterByName("pv") ? getParameterByName("pv") : "2";
+const pv = getParameterByName("pv") ? getParameterByName("pv") : "3";
 //console.log(pv);
 
 const Lista = props => {
