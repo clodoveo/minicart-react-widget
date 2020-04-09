@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
 import { PayPalButton } from "react-paypal-button-v2";
 import "./styles.css";
+
+const baseUrl = "https://minicart.it/";
 
 const getParameterByName = (name, url) => {
   if (!url) url = window.location.href;
@@ -18,6 +20,7 @@ const pv = getParameterByName("pv") ? getParameterByName("pv") : "3";
 //console.log(pv);
 
 const Lista = props => {
+  const inputRef = React.createRef(null);
   const { product, f } = props;
   let removeBt = "";
   let openClass = "";
@@ -27,18 +30,57 @@ const Lista = props => {
         <i className="fa fa-minus" />
       </button>
     );
-    openClass = "open";
+    if (!product.descriptionVisible) {
+      openClass = "open";
+    }
   }
 
+  let description = "";
+  let priceCardClass = "";
+
+  let fotoImg = "";
+  if (product.foto != "") {
+    fotoImg = (
+      <div className="imgContainer">
+        <img
+          src={`${baseUrl}img/original/${product.foto}`}
+          style={{ maxWidth: "100%" }}
+          alt={product.title}
+        />
+      </div>
+    );
+  }
+
+  if (product.descriptionVisible) {
+    description = (
+      <div className={"description animated fadeIn"}>
+        <i
+          className="fa fa-times closeCard"
+          onClick={() => f.toggleDescription(product.ID, inputRef)}
+        />
+        {fotoImg}
+        <p className="descriptionText">{product.descrizione}</p>
+      </div>
+    );
+    priceCardClass = "card";
+  }
   return (
-    <div className="products">
-      <p className={"product-title " + openClass}>{product.title}</p>{" "}
-      <div className="prices">€ {product.prezzo}</div>
-      <div className="description">{product.descrizione}</div>
+    <div className="products" ref={inputRef}>
+      <p
+        className={"product-title " + openClass}
+        onClick={() => f.toggleDescription(product.ID, inputRef)}
+      >
+        {product.title}
+      </p>{" "}
+      {description}
+      <div className={"prices " + priceCardClass}>€ {product.prezzo}</div>
       <div className="buttons">
         {removeBt}
         <Indicator q={product.q}> </Indicator>
-        <button className="add" onClick={() => f.addToCart(product.ID)}>
+        <button
+          className="add"
+          onClick={e => f.addToCart(product.ID, e, inputRef)}
+        >
           <i className="fa fa-plus" />
         </button>
       </div>
@@ -57,16 +99,14 @@ function App() {
     async function fetchData() {
       try {
         const settings = await fetch(
-          "https://minicart.it/api/ordini/settings/" + pv + "/"
+          baseUrl + "api/ordini/settings/" + pv + "/"
         );
 
         const jsonSettings = await settings.json();
 
         setSettings(jsonSettings);
 
-        const response = await fetch(
-          "https://minicart.it/api/ordini/menu/" + pv + "/"
-        );
+        const response = await fetch(baseUrl + "api/ordini/menu/" + pv + "/");
         const json = await response.json();
         // setPosts(json.data.children.map(it => it.data));
         let newJson = json.map(l => {
@@ -97,7 +137,21 @@ function App() {
   const [userdata, setUserdata] = useState(emtyForm);
   const [success, setSuccess] = useState(0);
 
-  const addToCart = index => {
+  const addToCart = (index, e, ref) => {
+    let viewportOffset = ref.current.getBoundingClientRect();
+    // these are relative to the viewport, i.e. the window
+    let top = viewportOffset.top;
+
+    let altezzaCard = ref.current.offsetHeight;
+    let attualePosizione = top;
+    let posizioneBordoInferiore = attualePosizione + altezzaCard;
+
+    let troppoBasso =
+      window.innerHeight - posizioneBordoInferiore < 125 ? true : false;
+
+    if (troppoBasso) {
+      window.scrollBy(0, 125 - (window.innerHeight - posizioneBordoInferiore));
+    }
     let newCart = menu.map(p => {
       //console.log(index);
       return p.ID === index ? { ...p, q: p.q + 1 } : p;
@@ -113,6 +167,18 @@ function App() {
     setMenu(newCart);
   };
 
+  const toggleDescription = (index, inputRef) => {
+    let newCart = menu.map(p => {
+      //console.log(index);
+
+      return p.ID === index && p.descrizione != ""
+        ? { ...p, descriptionVisible: !p.descriptionVisible }
+        : p;
+    });
+    setMenu(newCart);
+    scrollToRef(inputRef);
+  };
+  const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop);
   const calculatePrice = () => {
     //console.log(cart);
     return menu.reduce(
@@ -166,14 +232,11 @@ function App() {
     return dati;
   };
   const inviaOrdine = async () => {
-    const res = await postData(
-      "https://minicart.it/api/ordini/new/" + pv + "/",
-      {
-        menu: menu,
-        userdata: userdata,
-        paymentType: paymentType
-      }
-    );
+    const res = await postData(baseUrl + "api/ordini/new/" + pv + "/", {
+      menu: menu,
+      userdata: userdata,
+      paymentType: paymentType
+    });
     const result = await res;
     //console.log(result);
     if (result.success === true) {
@@ -424,7 +487,7 @@ function App() {
           <img
             className="logo"
             alt={settings.title}
-            src={`https://minicart.it/img/original/${settings.logo}`}
+            src={`${baseUrl}img/original/${settings.logo}`}
           />
         </h1>
         <h2>{settings.motto}</h2>
@@ -435,7 +498,7 @@ function App() {
               <Lista
                 key={item.ID}
                 product={item}
-                f={{ addToCart, removeToCart }}
+                f={{ addToCart, removeToCart, toggleDescription }}
               />
             );
           })}
