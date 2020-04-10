@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import { PayPalButton } from "react-paypal-button-v2";
 import "./styles.css";
@@ -136,6 +136,7 @@ function App() {
   const [step, setStep] = useState(0);
   const [userdata, setUserdata] = useState(emtyForm);
   const [success, setSuccess] = useState(0);
+  const [orderNumber, setOrderNumber] = useState(0);
 
   const addToCart = (index, e, ref) => {
     let viewportOffset = ref.current.getBoundingClientRect();
@@ -206,7 +207,6 @@ function App() {
   const handleSubmit = evt => {
     evt.preventDefault();
     changeStep(true);
-    console.log(userdata);
   };
   const postData = async (url = "", data = {}) => {
     // Default options are marked with *
@@ -241,6 +241,7 @@ function App() {
     //console.log(result);
     if (result.success === true) {
       setSuccess(1);
+      setOrderNumber(result.order_n);
     } else {
       setSuccess(-1);
     }
@@ -275,10 +276,7 @@ function App() {
     view = (
       <div>
         <p>
-          <label>
-            per faicilitare il resto dimmi con che talgi di banconote paghi (es:
-            50 €):
-          </label>
+          <label>{settings.testo_contanti}</label>
           <input
             type="email"
             name="banconote"
@@ -297,17 +295,18 @@ function App() {
   if (paymentType === "bonifico" && step === 3) {
     view = (
       <div>
-        <>
-          <label>
-            <p>
-              la preghiamo di effettuare il pagamento al seguente IBAN:
-              <strong>{settings.testo_bonifico}</strong>
-            </p>
-            <p>
-              La spedizione avverà nelle 24 ore dalla ricezione del pagamento
-            </p>
-          </label>
-        </>
+        <p>
+          <label>{settings.testo_bonifico}</label>
+          <input
+            type="email"
+            name="banconote"
+            value={userdata.banconote}
+            onChange={e => {
+              setUserdata({ ...userdata, banconote: e.target.value });
+            }}
+          />
+        </p>
+
         <button className="btn btn-invia" type="submit" onClick={inviaOrdine}>
           Invia ordine
         </button>
@@ -394,7 +393,7 @@ function App() {
   }
   if (step === 2) {
     view = (
-      <>
+      <div>
         Metodo pagamento:
         <div className="btn-pagaora">
           <button className="btn" onClick={() => goToPaypal()}>
@@ -407,7 +406,7 @@ function App() {
             Contanti
           </button>
         </div>
-      </>
+      </div>
     );
   }
 
@@ -449,10 +448,10 @@ function App() {
           <div className="success-icon-container animated tada">
             <i className="fa fa-check" />
           </div>
-          <p className="testo-scuccess">
-            Grazie il tuo ordine è stato inoltrato
+          <p className="testo-scuccess" />
+          <p>
+            Il tuo codice ordine è: <strong>#{orderNumber}</strong>
           </p>
-          <p>Riceverai una emai di conferma</p>
         </div>
       </div>
     );
