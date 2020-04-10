@@ -127,7 +127,7 @@ function App() {
     email: "",
     telefono: "",
     note: "",
-    banconote: ""
+    note_pagamento: ""
   };
 
   const [settings, setSettings] = useState({});
@@ -265,7 +265,7 @@ function App() {
             inviaOrdine();
           }}
           options={{
-            clientId: settings.paypal,
+            clientId: settings.paypal_ID,
             currency: "EUR"
           }}
         />
@@ -279,10 +279,10 @@ function App() {
           <label>{settings.testo_contanti}</label>
           <input
             type="email"
-            name="banconote"
-            value={userdata.banconote}
+            name="note_pagamento"
+            value={userdata.note_pagamento}
             onChange={e => {
-              setUserdata({ ...userdata, banconote: e.target.value });
+              setUserdata({ ...userdata, note_pagamento: e.target.value });
             }}
           />
         </p>
@@ -299,10 +299,10 @@ function App() {
           <label>{settings.testo_bonifico}</label>
           <input
             type="email"
-            name="banconote"
-            value={userdata.banconote}
+            name="note_pagamento"
+            value={userdata.note_pagamento}
             onChange={e => {
-              setUserdata({ ...userdata, banconote: e.target.value });
+              setUserdata({ ...userdata, note_pagamento: e.target.value });
             }}
           />
         </p>
@@ -442,13 +442,13 @@ function App() {
   }
   if (success === 1) {
     totale = (
-      <div className="appFooter">
+      <div className="appFooter full">
         <div className="clear" />
         <div className="success">
           <div className="success-icon-container animated tada">
             <i className="fa fa-check" />
           </div>
-          <p className="testo-scuccess" />
+          <p className="testo-scuccess">{settings.testo_success}</p>
           <p>
             Il tuo codice ordine è: <strong>#{orderNumber}</strong>
           </p>
@@ -458,7 +458,7 @@ function App() {
   }
   if (success === -1) {
     totale = (
-      <div className="appFooter">
+      <div className="appFooter full">
         <div className="clear" />
         <div className="success">
           <div className="success-icon-container animated tada error">
@@ -491,7 +491,7 @@ function App() {
         </h1>
         <h2>{settings.motto}</h2>
 
-        <div className="productContainer">
+        <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {
             return (
               <Lista

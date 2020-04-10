@@ -38,6 +38,15 @@ h5 {
 .productContainer {
   padding-bottom: 150px;
 }
+.productContainer.step-1 {
+  padding-bottom: calc(45vh + 180px);
+}
+.productContainer.step-2 {
+  padding-bottom: 260px;
+}
+.productContainer.step-3 {
+  padding-bottom: 205px;
+}
 .products {
   margin: 8px 10px;
   text-align: left;
@@ -143,6 +152,9 @@ h5 {
   text-align: left;
   padding: 20px;
 }
+.appFooter.full {
+  height: 100vh;
+}
 .appFooter .tot {
   float: left;
 }
@@ -218,6 +230,7 @@ label {
   color: #34a937;
   margin: 10px auto;
   margin-bottom: 30px;
+  margin-top: calc(50%);
 }
 .success-icon-container.error {
   color: red;
