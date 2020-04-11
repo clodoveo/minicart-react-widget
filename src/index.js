@@ -103,7 +103,7 @@ function App() {
         );
 
         const jsonSettings = await settings.json();
-
+        console.log(jsonSettings)   
         setSettings(jsonSettings);
 
         const response = await fetch(baseUrl + "api/ordini/menu/" + pv + "/");
@@ -396,15 +396,9 @@ function App() {
       <div>
         Metodo pagamento:
         <div className="btn-pagaora">
-          <button className="btn" onClick={() => goToPaypal()}>
-            Paypal
-          </button>
-          <button className="btn" onClick={() => goToBonifico()}>
-            Bonifico
-          </button>
-          <button className="btn" onClick={() => goTocash()}>
-            Contanti
-          </button>
+         {settings.paypal_attivo!=="0"?(<button className="btn" onClick={() => goToPaypal()}>Paypal</button>):("")}
+         {settings.bonifico_attivo!=="0"?(<button className="btn" onClick={() => goToBonifico()}>Bonifico</button>):("")}
+         {settings.contanti_attivo!=="0"?(<button className="btn" onClick={() => goTocash()}>Contanti</button>):("")}
         </div>
       </div>
     );
