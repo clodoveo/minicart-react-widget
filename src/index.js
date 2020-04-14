@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 
-import Lista from "/components/Lista";
-import Footer from "/components/Footer";
+import Lista from "./components/Lista";
+import Footer from "./components/Footer";
 
 import "./styles.css";
 
