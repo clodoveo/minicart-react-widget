@@ -133,6 +133,12 @@ function App() {
     setSettings(Newsettings);
   };
 
+  const toggleInfo = () => {
+    let Newsettings = { ...settings, infoVisible: !settings.infoVisible };
+    console.log(Newsettings);
+    setSettings(Newsettings);
+  };
+
   const openDescription = (index, inputRef) => {
     let newCart = menu.map(p => {
       return p.ID === index
@@ -242,7 +248,9 @@ function App() {
           />
         </h1>
         <h2>{settings.motto}</h2>
+
         {info}
+
         <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {
             return (
