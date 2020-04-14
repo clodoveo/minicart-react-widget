@@ -122,6 +122,12 @@ function App() {
     scrollToRef(inputRef);
   };
 
+  const toggleInfo = () => {
+    let Newsettings = { ...settings, infoVisible: !settings.infoVisible };
+    console.log(Newsettings);
+    setSettings(Newsettings);
+  };
+
   const openDescription = (index, inputRef) => {
     let newCart = menu.map(p => {
       return p.ID === index
@@ -214,7 +220,19 @@ function App() {
           />
         </h1>
         <h2>{settings.motto}</h2>
-
+        {settings.infoVisible ? (
+          <div className={`info infoVisible`} onClick={() => toggleInfo()}>
+            <strong>INFO:</strong> Si consegna solo a MEOLO, FOSSALTA, RONCADE.
+            Gli ordini verranno preparati e spediti a partire dalle ore 10:00
+            per mezzogiorno
+          </div>
+        ) : (
+          <div className={`info `} onClick={() => toggleInfo()}>
+            <strong>INFO:</strong> Si consegna solo a MEOLO, FOSSALTA, RONCADE.
+            Gli ordini verranno preparati e spediti a partire dalle ore 10:00
+            per mezzogiorno
+          </div>
+        )}
         <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {
             return (

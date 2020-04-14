@@ -21,7 +21,6 @@ h5 {
   font-family: "Nunito", sans-serif;
   text-align: center;
   color: #666;
-
   height: 100vh;
   max-width: 800px;
   margin: 0 auto;
@@ -30,13 +29,14 @@ h5 {
   display: none;
 }
 .appContainer {
-  background: #f9f6f3;
+  background: #fff;
 }
 .clearer {
   clear: both;
 }
 .productContainer {
-  padding-bottom: 150px;
+  padding: 7px 0 150px;
+  background: #f9f6f3;
 }
 .productContainer.step-1 {
   padding-bottom: calc(45vh + 180px);
@@ -302,4 +302,33 @@ label {
 .imgContainer img {
   margin: 0 auto;
   padding: 0;
+}
+
+.info {
+  background-color: #f05323;
+  color: #fff;
+  margin: 0;
+  padding: 5px 15px;
+  text-align: left;
+  border: 1px solid #f05323;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.info:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f107";
+  float: right;
+}
+.info.infoVisible {
+  text-overflow: visible;
+  overflow: initial;
+  white-space: initial;
+}
+.info.infoVisible:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f106";
+  float: right;
 }
