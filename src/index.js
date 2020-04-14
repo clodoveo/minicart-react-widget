@@ -20,7 +20,7 @@ const getParameterByName = (name, url) => {
 };
 
 // prendo il puntovendita da url
-const pv = getParameterByName("pv") ? getParameterByName("pv") : "3";
+const pv = getParameterByName("pv") ? getParameterByName("pv") : "4";
 //console.log(pv);
 
 function App() {
@@ -119,7 +119,18 @@ function App() {
         : p;
     });
     setMenu(newCart);
-    scrollToRef(inputRef);
+    menu.forEach((item, i) => {
+      if (item.ID === index && item.descrizione != "") {
+        scrollToRef(inputRef);
+        console.log("ha descrizione");
+      }
+    });
+  };
+
+  const toggleInfo = () => {
+    let Newsettings = { ...settings, infoVisible: !settings.infoVisible };
+    console.log(Newsettings);
+    setSettings(Newsettings);
   };
 
   const openDescription = (index, inputRef) => {
@@ -203,6 +214,23 @@ function App() {
 
   // APP
 
+  var info = "";
+  if (settings.info != "") {
+    info = settings.infoVisible ? (
+      <div className={`info infoVisible`} onClick={() => toggleInfo()}>
+        <strong>INFO:</strong> Si consegna solo a MEOLO, FOSSALTA, RONCADE. Gli
+        ordini verranno preparati e spediti a partire dalle ore 10:00 per
+        mezzogiorno
+      </div>
+    ) : (
+      <div className={`info `} onClick={() => toggleInfo()}>
+        <strong>INFO:</strong> Si consegna solo a MEOLO, FOSSALTA, RONCADE. Gli
+        ordini verranno preparati e spediti a partire dalle ore 10:00 per
+        mezzogiorno
+      </div>
+    );
+  }
+
   return (
     <div className="App">
       <div className="appContainer">
@@ -214,7 +242,7 @@ function App() {
           />
         </h1>
         <h2>{settings.motto}</h2>
-
+        {info}
         <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {
             return (

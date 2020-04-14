@@ -9,7 +9,7 @@ h1 {
 h2 {
   font-weight: 600;
   color: #6f6a60;
-  margin: 5px 0 25px;
+  margin: 5px 0 15px;
 }
 h5 {
   font-weight: 600;
@@ -21,7 +21,6 @@ h5 {
   font-family: "Nunito", sans-serif;
   text-align: center;
   color: #666;
-
   height: 100vh;
   max-width: 800px;
   margin: 0 auto;
@@ -30,13 +29,14 @@ h5 {
   display: none;
 }
 .appContainer {
-  background: #f9f6f3;
+  background: #fff;
 }
 .clearer {
   clear: both;
 }
 .productContainer {
-  padding-bottom: 150px;
+  padding: 7px 0 150px;
+  background: #f9f6f3;
 }
 .productContainer.step-1 {
   padding-bottom: calc(45vh + 180px);
@@ -50,7 +50,7 @@ h5 {
 .products {
   margin: 8px 10px;
   text-align: left;
-  padding: 10px 20px 8px;
+  padding: 10px 20px 8px 15px;
   /*border-bottom: 1px solid #f2f5f7;*/
   position: relative;
   background: #fff;
@@ -114,12 +114,12 @@ h5 {
   top: 15px;
 }
 .buttons.cardOpen {
-  bottom: 10px;
+  bottom: 16px;
   top: initial;
 }
 
 .buttons.cardOpen.moreThenZero {
-  bottom: 47px;
+  bottom: 53px;
   top: initial;
 }
 
@@ -271,6 +271,7 @@ label {
   white-space: initial;
 }
 .product-title.cardOpen {
+  padding-bottom: 20px;
   width: 90%;
   text-overflow: initial;
 
@@ -295,11 +296,40 @@ label {
 }
 .imgContainer {
   width: 100%;
-  padding-bottom: 0;
+  padding-bottom: 10px;
   border: none;
-  background-color: #eee;
 }
 .imgContainer img {
   margin: 0 auto;
   padding: 0;
+}
+
+.info {
+  background-color: #f05323;
+  color: #fff;
+  margin: 0;
+  padding: 5px 15px;
+  text-align: left;
+  border: 1px solid #f05323;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.info:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  padding: 0 0 0 5px;
+  content: "\f107";
+  float: right;
+}
+.info.infoVisible {
+  text-overflow: visible;
+  overflow: initial;
+  white-space: initial;
+}
+.info.infoVisible:before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f106";
+  float: right;
 }
