@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
-import { PayPalButton } from "react-paypal-button-v2";
+
+import Lista from "/components/Lista";
+import Footer from "/components/Footer";
+
 import "./styles.css";
 
 const baseUrl = "https://minicart.it/";
 
+// METODI GLOBALI
 const getParameterByName = (name, url) => {
   if (!url) url = window.location.href;
   name = name.replace(/[\[\]]/g, "\\$&");
@@ -19,82 +23,8 @@ const getParameterByName = (name, url) => {
 const pv = getParameterByName("pv") ? getParameterByName("pv") : "3";
 //console.log(pv);
 
-const Lista = props => {
-  const inputRef = React.createRef(null);
-  const { product, f } = props;
-  let removeBt = "";
-  let openClass = "";
-  if (product.q > 0) {
-    removeBt = (
-      <button className="remove" onClick={() => f.removeToCart(product.ID)}>
-        <i className="fa fa-minus" />
-      </button>
-    );
-    if (!product.descriptionVisible) {
-      openClass = "open";
-    }
-  }
-
-  let description = "";
-  let priceCardClass = "";
-
-  let fotoImg = "";
-  if (product.foto != "") {
-    fotoImg = (
-      <div className="imgContainer">
-        <img
-          src={`${baseUrl}img/original/${product.foto}`}
-          style={{ maxWidth: "100%" }}
-          alt={product.title}
-        />
-      </div>
-    );
-  }
-
-  if (product.descriptionVisible) {
-    description = (
-      <div className={"description animated fadeIn"}>
-        <i
-          className="fa fa-times closeCard"
-          onClick={() => f.toggleDescription(product.ID, inputRef)}
-        />
-        {fotoImg}
-        <p className="descriptionText">{product.descrizione}</p>
-      </div>
-    );
-    priceCardClass = "card";
-  }
-  return (
-    <div className="products" ref={inputRef}>
-      <p
-        className={"product-title " + openClass}
-        onClick={() => f.toggleDescription(product.ID, inputRef)}
-      >
-        {product.title}
-      </p>{" "}
-      {description}
-      <div className={"prices " + priceCardClass}>€ {product.prezzo}</div>
-      <div className="buttons">
-        {removeBt}
-        <Indicator q={product.q}> </Indicator>
-        <button
-          className="add"
-          onClick={e => f.addToCart(product.ID, e, inputRef)}
-        >
-          <i className="fa fa-plus" />
-        </button>
-      </div>
-      <div className="clearer" />
-    </div>
-  );
-};
-
-const Indicator = props => {
-  const { q } = props;
-  return q > 0 ? <span className="indicator">{q}</span> : "";
-};
-
 function App() {
+  //SETTINGS E MENU DA API CALL
   useEffect(() => {
     async function fetchData() {
       try {
@@ -103,7 +33,7 @@ function App() {
         );
 
         const jsonSettings = await settings.json();
-        console.log(jsonSettings)   
+        console.log(jsonSettings);
         setSettings(jsonSettings);
 
         const response = await fetch(baseUrl + "api/ordini/menu/" + pv + "/");
@@ -130,6 +60,7 @@ function App() {
     note_pagamento: ""
   };
 
+  // STATE
   const [settings, setSettings] = useState({});
   const [menu, setMenu] = useState([]);
   const [paymentType, setPaymentType] = useState("");
@@ -138,6 +69,7 @@ function App() {
   const [success, setSuccess] = useState(0);
   const [orderNumber, setOrderNumber] = useState(0);
 
+  // METODI GLOBALI APP
   const addToCart = (index, e, ref) => {
     let viewportOffset = ref.current.getBoundingClientRect();
     // these are relative to the viewport, i.e. the window
@@ -148,15 +80,19 @@ function App() {
     let posizioneBordoInferiore = attualePosizione + altezzaCard;
 
     let troppoBasso =
-      window.innerHeight - posizioneBordoInferiore < 125 ? true : false;
+      window.innerHeight - posizioneBordoInferiore < 155 ? true : false;
 
     if (troppoBasso) {
-      window.scrollBy(0, 125 - (window.innerHeight - posizioneBordoInferiore));
+      window.scrollBy(0, 155 - (window.innerHeight - posizioneBordoInferiore));
     }
     let newCart = menu.map(p => {
       //console.log(index);
-      return p.ID === index ? { ...p, q: p.q + 1 } : p;
+      return p.ID === index
+        ? // ? { ...p, q: p.q + 1, descriptionVisible: true }
+          { ...p, q: p.q + 1 }
+        : p;
     });
+
     //console.log(newCart);
     setMenu(newCart);
   };
@@ -168,17 +104,34 @@ function App() {
     setMenu(newCart);
   };
 
-  const toggleDescription = (index, inputRef) => {
+  const addMenuNote = (index, val) => {
     let newCart = menu.map(p => {
       //console.log(index);
+      return p.ID === index ? { ...p, noteRiga: val } : p;
+    });
+    setMenu(newCart);
+  };
 
-      return p.ID === index && p.descrizione != ""
+  const toggleDescription = (index, inputRef) => {
+    let newCart = menu.map(p => {
+      return p.ID === index
         ? { ...p, descriptionVisible: !p.descriptionVisible }
         : p;
     });
     setMenu(newCart);
     scrollToRef(inputRef);
   };
+
+  const openDescription = (index, inputRef) => {
+    let newCart = menu.map(p => {
+      return p.ID === index
+        ? { ...p, descriptionVisible: !p.descriptionVisible }
+        : p;
+    });
+    setMenu(newCart);
+    scrollToRef(inputRef);
+  };
+
   const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop);
   const calculatePrice = () => {
     //console.log(cart);
@@ -208,6 +161,7 @@ function App() {
     evt.preventDefault();
     changeStep(true);
   };
+
   const postData = async (url = "", data = {}) => {
     // Default options are marked with *
     const fd = new FormData();
@@ -247,232 +201,8 @@ function App() {
     }
   };
 
-  let totale = "";
-  let view = "";
+  // APP
 
-  if (paymentType === "paypal" && step === 3) {
-    view = (
-      <div className="paypal">
-        <h3>Paga ora:</h3>
-        <PayPalButton
-          amount={calculatePrice()}
-          // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
-          onSuccess={(details, data) => {
-            //alert("Transaction completed by " + details.payer.name.given_name);
-
-            // console.log(menu);
-            // OPTIONAL: Call your server to save the transaction
-            inviaOrdine();
-          }}
-          options={{
-            clientId: settings.paypal_ID,
-            currency: "EUR"
-          }}
-        />
-      </div>
-    );
-  }
-  if (paymentType === "cash" && step === 3) {
-    view = (
-      <div>
-        <p>
-          <label>{settings.testo_contanti}</label>
-          <input
-            type="email"
-            name="note_pagamento"
-            value={userdata.note_pagamento}
-            onChange={e => {
-              setUserdata({ ...userdata, note_pagamento: e.target.value });
-            }}
-          />
-        </p>
-        <button className="btn btn-invia" type="submit" onClick={inviaOrdine}>
-          Invia ordine
-        </button>
-      </div>
-    );
-  }
-  if (paymentType === "bonifico" && step === 3) {
-    view = (
-      <div>
-        <p>
-          <label>{settings.testo_bonifico}</label>
-          <input
-            type="email"
-            name="note_pagamento"
-            value={userdata.note_pagamento}
-            onChange={e => {
-              setUserdata({ ...userdata, note_pagamento: e.target.value });
-            }}
-          />
-        </p>
-
-        <button className="btn btn-invia" type="submit" onClick={inviaOrdine}>
-          Invia ordine
-        </button>
-      </div>
-    );
-  }
-
-  if (step === 1) {
-    view = (
-      <div>
-        <form onSubmit={handleSubmit}>
-          <div className="form">
-            <p>
-              <label>Nome:</label>
-              <input
-                type="text"
-                name="nome"
-                required
-                value={userdata.nome}
-                onChange={e => {
-                  setUserdata({ ...userdata, nome: e.target.value });
-                }}
-              />
-            </p>
-            <p>
-              <label>Indirizzo:</label>
-              <input
-                type="text"
-                name="indirizzo"
-                required
-                value={userdata.indirizzo}
-                onChange={e => {
-                  setUserdata({ ...userdata, indirizzo: e.target.value });
-                }}
-              />
-            </p>
-            <p>
-              <label>Telefono:</label>
-              <input
-                type="tel"
-                name="telefono"
-                required
-                value={userdata.telefono}
-                onChange={e => {
-                  setUserdata({ ...userdata, telefono: e.target.value });
-                }}
-              />
-            </p>
-            <p>
-              <label>Email:</label>
-              <input
-                type="email"
-                name="email"
-                required
-                value={userdata.email}
-                onChange={e => {
-                  setUserdata({ ...userdata, email: e.target.value });
-                }}
-              />
-            </p>
-            <p>
-              <label>NOTE :</label>
-              <textarea
-                name="note"
-                onChange={e => {
-                  setUserdata({ ...userdata, note: e.target.value });
-                }}
-                value={userdata.note}
-              />
-            </p>
-          </div>
-          <button
-            className="btn btn-right"
-            onClick={() => {
-              // changeStep(true);
-            }}
-            type="submit"
-          >
-            Procedi
-          </button>
-        </form>
-      </div>
-    );
-  }
-  if (step === 2) {
-    view = (
-      <div>
-        Metodo pagamento:
-        <div className="btn-pagaora">
-         {settings.paypal_attivo!=="0"?(<button className="btn" onClick={() => goToPaypal()}>Paypal</button>):("")}
-         {settings.bonifico_attivo!=="0"?(<button className="btn" onClick={() => goToBonifico()}>Bonifico</button>):("")}
-         {settings.contanti_attivo!=="0"?(<button className="btn" onClick={() => goTocash()}>Contanti</button>):("")}
-        </div>
-      </div>
-    );
-  }
-
-  let bottoneTotaleProcedi = "";
-  if (step === 0) {
-    bottoneTotaleProcedi = (
-      <button className="btn btn-right" onClick={() => changeStep(true)}>
-        Procedi
-      </button>
-    );
-  } else {
-    bottoneTotaleProcedi = (
-      <button
-        className=" btn-right btn-close"
-        onClick={() => changeStep(false)}
-      >
-        <i className="fa fa-times" />
-      </button>
-    );
-  }
-  if (calculatePrice() > 0) {
-    totale = (
-      <div className="appFooter">
-        <div className="tot">
-          <span className="">Totale: </span>
-          <span className="tot-price">€ {calculatePrice()}</span>
-        </div>
-        {bottoneTotaleProcedi}
-        <div className="clear" />
-        {view}
-      </div>
-    );
-  }
-  if (success === 1) {
-    totale = (
-      <div className="appFooter full">
-        <div className="clear" />
-        <div className="success">
-          <div className="success-icon-container animated tada">
-            <i className="fa fa-check" />
-          </div>
-          <p className="testo-scuccess">{settings.testo_success}</p>
-          <p>
-            Il tuo codice ordine è: <strong>#{orderNumber}</strong>
-          </p>
-        </div>
-      </div>
-    );
-  }
-  if (success === -1) {
-    totale = (
-      <div className="appFooter full">
-        <div className="clear" />
-        <div className="success">
-          <div className="success-icon-container animated tada error">
-            <i className="fa fa-times" />
-          </div>
-          <p className="testo-scuccess">C'è stato un problema</p>
-          <p>: (</p>
-          <button
-            className="btn"
-            onClick={() => {
-              setSuccess(0);
-              changeStep(false);
-            }}
-          >
-            Indietro
-          </button>
-        </div>
-      </div>
-    );
-  }
   return (
     <div className="App">
       <div className="appContainer">
@@ -492,11 +222,29 @@ function App() {
                 key={item.ID}
                 product={item}
                 f={{ addToCart, removeToCart, toggleDescription }}
+                baseUrl={baseUrl}
+                addMenuNote={addMenuNote}
               />
             );
           })}
         </div>
-        {totale}
+        <Footer
+          success={success}
+          setSuccess={setSuccess}
+          step={step}
+          changeStep={changeStep}
+          calculatePrice={calculatePrice}
+          settings={settings}
+          orderNumber={orderNumber}
+          paymentType={paymentType}
+          userdata={userdata}
+          setUserdata={setUserdata}
+          inviaOrdine={inviaOrdine}
+          handleSubmit={handleSubmit}
+          goToPaypal={goToPaypal}
+          goToBonifico={goToBonifico}
+          goTocash={goTocash}
+        />
       </div>
     </div>
   );

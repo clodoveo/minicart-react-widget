@@ -87,6 +87,19 @@ h5 {
 }
 .description {
   color: rgb(58, 22, 22);
+  padding-bottom: 50px;
+}
+.noteRiga {
+  background: none;
+  border: none;
+  width: 100%;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  padding: 15px 0px 5px;
+  outline: none;
+}
+.noteRiga::placeholder {
+  color: #ccc;
 }
 .indicator {
   display: inline-block;
@@ -98,8 +111,18 @@ h5 {
 .buttons {
   position: absolute;
   right: 10px;
-  bottom: 15px;
+  top: 15px;
 }
+.buttons.cardOpen {
+  bottom: 10px;
+  top: initial;
+}
+
+.buttons.cardOpen.moreThenZero {
+  bottom: 47px;
+  top: initial;
+}
+
 .btn,
 .btn:focus {
   width: 100%;
@@ -237,18 +260,31 @@ label {
 }
 .product-title {
   width: calc(100% - 35px);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .product-title.open {
   width: calc(100% - 120px);
+  text-overflow: initial;
+  overflow: initial;
+  white-space: initial;
+}
+.product-title.cardOpen {
+  width: 90%;
+  text-overflow: initial;
+
+  overflow: initial;
+  white-space: initial;
 }
 .closeCard {
   position: absolute;
-  right: 5px;
-  top: -15px;
-  font-size: 15px;
+  right: 15px;
+  top: -9px;
+  font-size: 17px;
   padding: 20px;
   padding-right: 0px;
-  color: #666;
+  color: #6f6a60;
 }
 .description p.descriptionText {
   margin-bottom: 50px;
