@@ -71,6 +71,7 @@ function App() {
 
   // METODI GLOBALI APP
   const addToCart = (index, e, ref) => {
+    window.navigator.vibrate([50]);
     let viewportOffset = ref.current.getBoundingClientRect();
     // these are relative to the viewport, i.e. the window
     let top = viewportOffset.top;
@@ -97,6 +98,7 @@ function App() {
     setMenu(newCart);
   };
   const removeToCart = index => {
+    window.navigator.vibrate([100]);
     let newCart = menu.map(p => {
       //console.log(index);
       return p.ID === index ? { ...p, q: p.q - 1 } : p;
@@ -231,15 +233,16 @@ function App() {
     );
   }
 
+  const url_logo =
+    settings.logo == ""
+      ? `${baseUrl}img/original/minicart-icona.png`
+      : `${baseUrl}img/original/${settings.logo}`;
+
   return (
     <div className="App">
       <div className="appContainer">
         <h1>
-          <img
-            className="logo"
-            alt={settings.title}
-            src={`${baseUrl}img/original/${settings.logo}`}
-          />
+          <img className="logo" alt={settings.title} src={url_logo} />
         </h1>
         <h2>{settings.motto}</h2>
         {info}

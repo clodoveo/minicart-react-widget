@@ -1,5 +1,6 @@
 import React from "react";
 import Wizard from "./Wizard";
+import ImportoMinimo from "./ImportoMinimo";
 
 const Footer = props => {
   const {
@@ -21,12 +22,14 @@ const Footer = props => {
   } = props;
 
   var bottoneTotaleProcedi = "";
-  if (step === 0) {
+  if (step === 0 && settings.importo_minimo <= calculatePrice()) {
     bottoneTotaleProcedi = (
       <button className="btn btn-right" onClick={() => changeStep(true)}>
         Procedi
       </button>
     );
+  } else if (step === 0 && settings.importo_minimo > calculatePrice()) {
+    bottoneTotaleProcedi = <ImportoMinimo settings={settings} />;
   } else {
     bottoneTotaleProcedi = (
       <button
