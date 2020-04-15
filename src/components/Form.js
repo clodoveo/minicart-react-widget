@@ -1,7 +1,14 @@
 import React from "react";
+import ImportoMinimo from "./ImportoMinimo";
 
 const Form = props => {
-  const { handleSubmit, userdata, setUserdata } = props;
+  const {
+    handleSubmit,
+    userdata,
+    setUserdata,
+    settings,
+    calculatePrice
+  } = props;
 
   return (
     <div>
@@ -66,15 +73,19 @@ const Form = props => {
             />
           </p>
         </div>
-        <button
-          className="btn btn-right"
-          onClick={() => {
-            // changeStep(true);
-          }}
-          type="submit"
-        >
-          Procedi
-        </button>
+        {settings.importo_minimo <= calculatePrice() ? (
+          <button
+            className="btn btn-right"
+            onClick={() => {
+              // changeStep(true);
+            }}
+            type="submit"
+          >
+            Procedi
+          </button>
+        ) : (
+          <ImportoMinimo settings={settings} />
+        )}
       </form>
     </div>
   );
