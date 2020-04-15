@@ -333,3 +333,8 @@ label {
   content: "\f106";
   float: right;
 }
+.minimo-ordine {
+  clear: both;
+  font-size: 20px;
+  width: 100%;
+}
