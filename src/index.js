@@ -226,15 +226,11 @@ function App() {
   if (settings.info != "") {
     info = settings.infoVisible ? (
       <div className={`info infoVisible`} onClick={() => toggleInfo()}>
-        <strong>INFO:</strong> Si consegna solo a MEOLO, FOSSALTA, RONCADE. Gli
-        ordini verranno preparati e spediti a partire dalle ore 10:00 per
-        mezzogiorno
+        <strong>INFO:</strong> {settings.info}
       </div>
     ) : (
       <div className={`info `} onClick={() => toggleInfo()}>
-        <strong>INFO:</strong> Si consegna solo a MEOLO, FOSSALTA, RONCADE. Gli
-        ordini verranno preparati e spediti a partire dalle ore 10:00 per
-        mezzogiorno
+        <strong>INFO:</strong> {settings.info}
       </div>
     );
   }
