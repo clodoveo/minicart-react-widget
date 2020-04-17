@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import * as Sentry from "@sentry/browser";
 
 import Lista from "./components/Lista";
 import Footer from "./components/Footer";
+import Onboarding from "./components/Onboarding";
 
 import "./styles.css";
 
 const baseUrl = "https://minicart.it/";
+
+// tracking errori
+Sentry.init({
+  dsn:
+    "https://f9d712165e144efe8c715e705c0b7e78@o48768.ingest.sentry.io/5203709"
+});
 
 // METODI GLOBALI
 const getParameterByName = (name, url) => {
@@ -69,9 +77,19 @@ function App() {
   const [success, setSuccess] = useState(0);
   const [orderNumber, setOrderNumber] = useState(0);
 
+  navigator.vibrate =
+    navigator.vibrate ||
+    navigator.webkitVibrate ||
+    navigator.mozVibrate ||
+    navigator.msVibrate;
+
   // METODI GLOBALI APP
   const addToCart = (index, e, ref) => {
-    window.navigator.vibrate([50]);
+
+    if (navigator.vibrate) {
+      window.navigator.vibrate([50]);
+    }
+
     let viewportOffset = ref.current.getBoundingClientRect();
     // these are relative to the viewport, i.e. the window
     let top = viewportOffset.top;
@@ -98,7 +116,11 @@ function App() {
     setMenu(newCart);
   };
   const removeToCart = index => {
-    window.navigator.vibrate([100]);
+
+    if (navigator.vibrate) {
+      window.navigator.vibrate([100]);
+    }
+
     let newCart = menu.map(p => {
       //console.log(index);
       return p.ID === index ? { ...p, q: p.q - 1 } : p;
@@ -280,6 +302,7 @@ function App() {
           goToBonifico={goToBonifico}
           goTocash={goTocash}
         />
+        {/*<Onboarding settings={settings} menu={menu} />*/}
       </div>
     </div>
   );

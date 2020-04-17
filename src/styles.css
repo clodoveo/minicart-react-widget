@@ -340,3 +340,65 @@ label {
   font-size: 20px;
   width: 100%;
 }
+
+.onboarding-overlay {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.onboarding-overlay-image {
+  background-color: #fff;
+  background-image: url("https://minicart.it/img/original/screen.png");
+  background-size: contain;
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
+
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(2px);
+  background-color: rgba(255, 255, 255, 0.5);
+  max-width: 350px;
+  position: fixed;
+  width: 350px;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 175px);
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
+.cambia-immagine a {
+  position: fixed;
+  top: 50px;
+  left: calc(50% - 75px);
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: rgba(100, 100, 100, 0.5);
+
+  color: #fff !important;
+  padding: 10px 20px;
+}
+.aggiungi-prodotti a {
+  position: fixed;
+  top: 350px;
+  left: calc(50% - 98px);
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: rgba(100, 100, 100, 0.5);
+
+  color: #fff !important;
+  padding: 10px 20px;
+}
+.aggiungi-pagamento a {
+  position: fixed;
+  bottom: 30px;
+  left: calc(50% - 120px);
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: rgba(100, 100, 100, 0.5);
+
+  color: #fff !important;
+  padding: 10px 20px;
+}
+
