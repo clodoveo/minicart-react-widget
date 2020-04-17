@@ -6,10 +6,12 @@
   "main": "src/index.js",
   "dependencies": {
     "@sentry/browser": "5.15.4",
+    "es6-promise": "4.2.8",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
     "react-paypal-button-v2": "2.6.1",
-    "react-scripts": "2.0.3"
+    "react-scripts": "2.0.3",
+    "whatwg-fetch": "3.0.0"
   },
   "devDependencies": {},
   "scripts": {

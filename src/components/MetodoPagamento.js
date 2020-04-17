@@ -22,7 +22,7 @@ const MetodoPagamento = props => {
         )}
         {settings.contanti_attivo !== "0" ? (
           <button className="btn" onClick={() => f.goTocash()}>
-            Contanti
+            Alla consegna
           </button>
         ) : (
           ""
