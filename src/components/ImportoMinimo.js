@@ -2,6 +2,7 @@ import React from "react";
 
 const ImportoMinimo = props => {
   const { settings } = props;
+
   // enable vibration support
   navigator.vibrate =
     navigator.vibrate ||
@@ -12,6 +13,7 @@ const ImportoMinimo = props => {
   if (navigator.vibrate) {
     window.navigator.vibrate([100, 30, 100]);
   }
+
 
   return (
     <div className="minimo-ordine animated headShake">

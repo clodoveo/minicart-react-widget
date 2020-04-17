@@ -318,7 +318,9 @@ label {
 .info:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
+
   padding: 0 0 0 5px;
+
   content: "\f107";
   float: right;
 }
@@ -338,6 +340,7 @@ label {
   font-size: 20px;
   width: 100%;
 }
+
 .onboarding-overlay {
   background-color: #fff;
   position: fixed;
@@ -398,3 +401,4 @@ label {
   color: #fff !important;
   padding: 10px 20px;
 }
+
