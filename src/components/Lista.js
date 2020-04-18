@@ -25,7 +25,18 @@ const Lista = props => {
   let priceCardClass = "";
 
   let fotoImg = "";
-  if (product.foto != "") {
+
+  if (product.foto != "" && product.foto.indexOf("https") > -1) {
+    fotoImg = (
+      <div className="imgContainer">
+        <img
+          src={`${product.foto}`}
+          style={{ maxWidth: "100%" }}
+          alt={product.title}
+        />
+      </div>
+    );
+  } else if (product.foto != "") {
     fotoImg = (
       <div className="imgContainer">
         <img

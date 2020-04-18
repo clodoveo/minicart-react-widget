@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import * as Sentry from "@sentry/browser";
+import "whatwg-fetch";
+import "es6-promise/auto";
 
 import Lista from "./components/Lista";
 import Footer from "./components/Footer";
@@ -9,7 +11,7 @@ import Onboarding from "./components/Onboarding";
 import "./styles.css";
 
 const baseUrl = "https://minicart.it/";
-
+let url_logo = `${baseUrl}img/original/minicart-icona.png`;
 // tracking errori
 Sentry.init({
   dsn:
@@ -36,7 +38,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const settings = await fetch(
+        const settings = await window.fetch(
           baseUrl + "api/ordini/settings/" + pv + "/"
         );
 
@@ -44,7 +46,18 @@ function App() {
         console.log(jsonSettings);
         setSettings(jsonSettings);
 
-        const response = await fetch(baseUrl + "api/ordini/menu/" + pv + "/");
+        if (
+          jsonSettings.logo != "" &&
+          jsonSettings.logo.indexOf("https") > -1
+        ) {
+          url_logo = jsonSettings.logo;
+        } else if (jsonSettings.logo != "") {
+          url_logo = `${baseUrl}img/original/${jsonSettings.logo}`;
+        }
+
+        const response = await window.fetch(
+          baseUrl + "api/ordini/menu/" + pv + "/"
+        );
         const json = await response.json();
         // setPosts(json.data.children.map(it => it.data));
         let newJson = json.map(l => {
@@ -208,7 +221,7 @@ function App() {
     const fd = new FormData();
     fd.append("data", JSON.stringify(data));
     //console.log(JSON.stringify(data));
-    const response = await fetch(url, {
+    const response = await window.fetch(url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -256,11 +269,6 @@ function App() {
       </div>
     );
   }
-
-  const url_logo =
-    settings.logo == ""
-      ? `${baseUrl}img/original/minicart-icona.png`
-      : `${baseUrl}img/original/${settings.logo}`;
 
   return (
     <div className="App">
