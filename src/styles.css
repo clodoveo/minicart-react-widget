@@ -9,7 +9,7 @@ h1 {
 h2 {
   font-weight: 600;
   color: #6f6a60;
-  margin: 5px 0 25px;
+  margin: 5px 0 15px;
 }
 h5 {
   font-weight: 600;
@@ -50,7 +50,7 @@ h5 {
 .products {
   margin: 8px 10px;
   text-align: left;
-  padding: 10px 20px 8px;
+  padding: 10px 20px 8px 15px;
   /*border-bottom: 1px solid #f2f5f7;*/
   position: relative;
   background: #fff;
@@ -114,12 +114,12 @@ h5 {
   top: 15px;
 }
 .buttons.cardOpen {
-  bottom: 10px;
+  bottom: 16px;
   top: initial;
 }
 
 .buttons.cardOpen.moreThenZero {
-  bottom: 47px;
+  bottom: 53px;
   top: initial;
 }
 
@@ -271,6 +271,7 @@ label {
   white-space: initial;
 }
 .product-title.cardOpen {
+  padding-bottom: 20px;
   width: 90%;
   text-overflow: initial;
 
@@ -295,9 +296,8 @@ label {
 }
 .imgContainer {
   width: 100%;
-  padding-bottom: 0;
+  padding-bottom: 10px;
   border: none;
-  background-color: #eee;
 }
 .imgContainer img {
   margin: 0 auto;
@@ -318,6 +318,9 @@ label {
 .info:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
+
+  padding: 0 0 0 5px;
+
   content: "\f107";
   float: right;
 }
@@ -332,3 +335,70 @@ label {
   content: "\f106";
   float: right;
 }
+.minimo-ordine {
+  clear: both;
+  font-size: 20px;
+  width: 100%;
+}
+
+.onboarding-overlay {
+  background-color: #fff;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+.onboarding-overlay-image {
+  background-color: #fff;
+  background-image: url("https://minicart.it/img/original/screen.png");
+  background-size: contain;
+  filter: blur(3px);
+  -webkit-filter: blur(3px);
+
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(2px);
+  background-color: rgba(255, 255, 255, 0.5);
+  max-width: 350px;
+  position: fixed;
+  width: 350px;
+  top: 0;
+  bottom: 0;
+  left: calc(50% - 175px);
+  background-repeat: no-repeat;
+  background-position-x: center;
+}
+.cambia-immagine a {
+  position: fixed;
+  top: 50px;
+  left: calc(50% - 75px);
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: rgba(100, 100, 100, 0.5);
+
+  color: #fff !important;
+  padding: 10px 20px;
+}
+.aggiungi-prodotti a {
+  position: fixed;
+  top: 350px;
+  left: calc(50% - 98px);
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: rgba(100, 100, 100, 0.5);
+
+  color: #fff !important;
+  padding: 10px 20px;
+}
+.aggiungi-pagamento a {
+  position: fixed;
+  bottom: 30px;
+  left: calc(50% - 120px);
+  display: inline-block;
+  border: 1px solid #ccc;
+  background-color: rgba(100, 100, 100, 0.5);
+
+  color: #fff !important;
+  padding: 10px 20px;
+}
+

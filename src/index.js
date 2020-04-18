@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
+import * as Sentry from "@sentry/browser";
+import "whatwg-fetch";
+import "es6-promise/auto";
 
 import Lista from "./components/Lista";
 import Footer from "./components/Footer";
+import Onboarding from "./components/Onboarding";
 
 import "./styles.css";
 
 const baseUrl = "https://minicart.it/";
+
+// tracking errori
+Sentry.init({
+  dsn:
+    "https://f9d712165e144efe8c715e705c0b7e78@o48768.ingest.sentry.io/5203709"
+});
 
 // METODI GLOBALI
 const getParameterByName = (name, url) => {
@@ -20,7 +30,7 @@ const getParameterByName = (name, url) => {
 };
 
 // prendo il puntovendita da url
-const pv = getParameterByName("pv") ? getParameterByName("pv") : "3";
+const pv = getParameterByName("pv") ? getParameterByName("pv") : "4";
 //console.log(pv);
 
 function App() {
@@ -28,7 +38,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const settings = await fetch(
+        const settings = await window.fetch(
           baseUrl + "api/ordini/settings/" + pv + "/"
         );
 
@@ -36,7 +46,9 @@ function App() {
         console.log(jsonSettings);
         setSettings(jsonSettings);
 
-        const response = await fetch(baseUrl + "api/ordini/menu/" + pv + "/");
+        const response = await window.fetch(
+          baseUrl + "api/ordini/menu/" + pv + "/"
+        );
         const json = await response.json();
         // setPosts(json.data.children.map(it => it.data));
         let newJson = json.map(l => {
@@ -69,8 +81,19 @@ function App() {
   const [success, setSuccess] = useState(0);
   const [orderNumber, setOrderNumber] = useState(0);
 
+  navigator.vibrate =
+    navigator.vibrate ||
+    navigator.webkitVibrate ||
+    navigator.mozVibrate ||
+    navigator.msVibrate;
+
   // METODI GLOBALI APP
   const addToCart = (index, e, ref) => {
+
+    if (navigator.vibrate) {
+      window.navigator.vibrate([50]);
+    }
+
     let viewportOffset = ref.current.getBoundingClientRect();
     // these are relative to the viewport, i.e. the window
     let top = viewportOffset.top;
@@ -97,6 +120,11 @@ function App() {
     setMenu(newCart);
   };
   const removeToCart = index => {
+
+    if (navigator.vibrate) {
+      window.navigator.vibrate([100]);
+    }
+
     let newCart = menu.map(p => {
       //console.log(index);
       return p.ID === index ? { ...p, q: p.q - 1 } : p;
@@ -119,7 +147,18 @@ function App() {
         : p;
     });
     setMenu(newCart);
-    scrollToRef(inputRef);
+    menu.forEach((item, i) => {
+      if (item.ID === index && item.descrizione != "") {
+        scrollToRef(inputRef);
+        console.log("ha descrizione");
+      }
+    });
+  };
+
+  const toggleInfo = () => {
+    let Newsettings = { ...settings, infoVisible: !settings.infoVisible };
+    console.log(Newsettings);
+    setSettings(Newsettings);
   };
 
   const toggleInfo = () => {
@@ -173,7 +212,7 @@ function App() {
     const fd = new FormData();
     fd.append("data", JSON.stringify(data));
     //console.log(JSON.stringify(data));
-    const response = await fetch(url, {
+    const response = await window.fetch(url, {
       method: "POST", // *GET, POST, PUT, DELETE, etc.
       mode: "cors", // no-cors, *cors, same-origin
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
@@ -209,30 +248,34 @@ function App() {
 
   // APP
 
+  var info = "";
+  if (settings.info != "") {
+    info = settings.infoVisible ? (
+      <div className={`info infoVisible`} onClick={() => toggleInfo()}>
+        <strong>INFO:</strong> {settings.info}
+      </div>
+    ) : (
+      <div className={`info `} onClick={() => toggleInfo()}>
+        <strong>INFO:</strong> {settings.info}
+      </div>
+    );
+  }
+
+  const url_logo =
+    settings.logo == ""
+      ? `${baseUrl}img/original/minicart-icona.png`
+      : `${baseUrl}img/original/${settings.logo}`;
+
   return (
     <div className="App">
       <div className="appContainer">
         <h1>
-          <img
-            className="logo"
-            alt={settings.title}
-            src={`${baseUrl}img/original/${settings.logo}`}
-          />
+          <img className="logo" alt={settings.title} src={url_logo} />
         </h1>
         <h2>{settings.motto}</h2>
-        {settings.infoVisible ? (
-          <div className={`info infoVisible`} onClick={() => toggleInfo()}>
-            <strong>INFO:</strong> Si consegna solo a MEOLO, FOSSALTA, RONCADE.
-            Gli ordini verranno preparati e spediti a partire dalle ore 10:00
-            per mezzogiorno
-          </div>
-        ) : (
-          <div className={`info `} onClick={() => toggleInfo()}>
-            <strong>INFO:</strong> Si consegna solo a MEOLO, FOSSALTA, RONCADE.
-            Gli ordini verranno preparati e spediti a partire dalle ore 10:00
-            per mezzogiorno
-          </div>
-        )}
+
+        {info}
+
         <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {
             return (
@@ -263,6 +306,7 @@ function App() {
           goToBonifico={goToBonifico}
           goTocash={goTocash}
         />
+        {/*<Onboarding settings={settings} menu={menu} />*/}
       </div>
     </div>
   );
