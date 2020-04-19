@@ -15,7 +15,7 @@ const ImportoMinimo = props => {
 
   return (
     <div className="minimo-ordine animated headShake">
-      Impoto minimo carrello: {settings.importo_minimo} €
+      Importo minimo carrello: {settings.importo_minimo} €
     </div>
   );
 };

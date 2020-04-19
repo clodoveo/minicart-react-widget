@@ -48,7 +48,10 @@ const Lista = props => {
     );
   }
 
-  if (product.descriptionVisible && product.descrizione != "") {
+  if (
+    (product.descriptionVisible && product.descrizione != "") ||
+    (product.descriptionVisible && product.foto != "")
+  ) {
     description = (
       <div className={"description animated fadeIn"}>
         <i
