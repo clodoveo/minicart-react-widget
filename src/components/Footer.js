@@ -22,13 +22,16 @@ const Footer = props => {
   } = props;
 
   var bottoneTotaleProcedi = "";
-  if (step === 0 && settings.importo_minimo <= calculatePrice()) {
+  if (step === 0 && parseFloat(settings.importo_minimo) <= calculatePrice()) {
     bottoneTotaleProcedi = (
       <button className="btn btn-right" onClick={() => changeStep(true)}>
         Procedi
       </button>
     );
-  } else if (step === 0 && settings.importo_minimo > calculatePrice()) {
+  } else if (
+    step === 0 &&
+    parseFloat(settings.importo_minimo) > calculatePrice()
+  ) {
     bottoneTotaleProcedi = <ImportoMinimo settings={settings} />;
   } else {
     bottoneTotaleProcedi = (

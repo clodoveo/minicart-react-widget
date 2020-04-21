@@ -10,6 +10,8 @@ import Onboarding from "./components/Onboarding";
 
 import "./styles.css";
 
+const nl2br = require("react-nl2br");
+
 const baseUrl = "https://minicart.it/";
 let url_logo = `${baseUrl}img/original/minicart-icona.png`;
 // tracking errori
@@ -180,7 +182,10 @@ function App() {
   const calculatePrice = () => {
     //console.log(cart);
     return menu.reduce(
-      (prezzo, menu) => prezzo + parseFloat(menu.prezzo) * menu.q,
+      (prezzo, menu) =>
+        parseFloat(
+          parseFloat(prezzo) + parseFloat(menu.prezzo) * menu.q
+        ).toFixed(2),
       0
     );
   };
@@ -266,8 +271,8 @@ function App() {
         <h1>
           <img className="logo" alt={settings.title} src={url_logo} />
         </h1>
-        <h2>{settings.motto}</h2>
-        {info}
+        <h2>{nl2br(settings.motto)}</h2>
+        {nl2br(info)}
         <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {
             return (
@@ -277,6 +282,7 @@ function App() {
                 f={{ addToCart, removeToCart, toggleDescription }}
                 baseUrl={baseUrl}
                 addMenuNote={addMenuNote}
+                nl2br={nl2br}
               />
             );
           })}
@@ -297,6 +303,7 @@ function App() {
           goToPaypal={goToPaypal}
           goToBonifico={goToBonifico}
           goTocash={goTocash}
+          nl2br={nl2br}
         />
         {/*<Onboarding settings={settings} menu={menu} />*/}
       </div>

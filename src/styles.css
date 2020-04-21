@@ -1,7 +1,15 @@
 html {
   scroll-behavior: smooth;
+  width: 1px;
+  height: 1px;
+
+  min-width: 100%;
+  *width: 100%;
 }
 
+#root {
+  background-color: #eee;
+}
 h1 {
   margin: 0;
   padding: 30px 0 0;
@@ -21,9 +29,15 @@ h5 {
   font-family: "Nunito", sans-serif;
   text-align: center;
   color: #666;
-  height: 100vh;
-  max-width: 800px;
+
   margin: 0 auto;
+  width: 1px;
+  height: 1px;
+  height: 100vh;
+
+  max-width: 500px;
+  width: 100%;
+  overflow: scroll;
 }
 .hide {
   display: none;
@@ -164,7 +178,7 @@ h5 {
 }
 
 .appFooter {
-  max-width: 760px;
+  max-width: 460px;
   margin: 0 auto;
   position: fixed;
   bottom: 0px;
@@ -397,4 +411,16 @@ label {
 
   color: #fff !important;
   padding: 10px 20px;
+}
+.icona-immagine {
+  font-size: 17px;
+  color: #e6ba82;
+  padding-left: 5px;
+}
+.indicatore-dettagli {
+  font-size: 14px;
+  color: #ccc;
+  position: absolute;
+  left: calc(50% - 14px);
+  bottom: 10px;
 }

@@ -51,7 +51,7 @@ const Wizard = props => {
             }}
           />
         </p>
-        {settings.importo_minimo <= calculatePrice() ? (
+        {parseFloat(settings.importo_minimo) <= calculatePrice() ? (
           <button className="btn btn-invia" type="submit" onClick={inviaOrdine}>
             Invia ordine
           </button>
@@ -75,7 +75,7 @@ const Wizard = props => {
           />
         </p>
 
-        {settings.importo_minimo <= calculatePrice() ? (
+        {parseFloat(settings.importo_minimo) <= calculatePrice() ? (
           <button className="btn btn-invia" type="submit" onClick={inviaOrdine}>
             Invia ordine
           </button>
@@ -87,12 +87,15 @@ const Wizard = props => {
   } else if (paymentType === "paypal" && step === 3) {
     return (
       <>
-        {settings.importo_minimo <= calculatePrice() ? (
+        {parseFloat(settings.importo_minimo) <= calculatePrice() ? (
           <div className="paypal">
             <h3>Paga ora:</h3>
             <PayPalButton
               amount={parseFloat(
-                calculatePrice() + parseFloat(settings.spese_spedizione)
+                parseFloat(
+                  parseFloat(calculatePrice()) +
+                    parseFloat(settings.spese_spedizione)
+                ).toFixed(2)
               )}
               // shippingPreference="NO_SHIPPING" // default is "GET_FROM_FILE"
               onSuccess={(details, data) => {

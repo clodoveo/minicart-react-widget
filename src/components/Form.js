@@ -73,7 +73,7 @@ const Form = props => {
             />
           </p>
         </div>
-        {settings.importo_minimo <= calculatePrice() ? (
+        {parseFloat(settings.importo_minimo) <= calculatePrice() ? (
           <button
             className="btn btn-right"
             onClick={() => {
