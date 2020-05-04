@@ -48,6 +48,7 @@ function App() {
         //console.log(jsonSettings);
         setSettings(jsonSettings);
 
+
         if (
           jsonSettings.logo != "" &&
           jsonSettings.logo.indexOf("https") > -1
@@ -56,6 +57,7 @@ function App() {
         } else if (jsonSettings.logo != "") {
           url_logo = `${baseUrl}img/original/${jsonSettings.logo}`;
         }
+
 
         const response = await window.fetch(
           baseUrl + "api/ordini/menu/" + pv + "/"
@@ -101,12 +103,17 @@ function App() {
 
   // METODI GLOBALI APP
   const addToCart = (index, e, ref) => {
+
     if (navigator.vibrate) {
       window.navigator.vibrate([50]);
     }
+
     // let viewportOffset = ref.current.getBoundingClientRect();
     // // these are relative to the viewport, i.e. the window
     // let top = viewportOffset.top;
+
+
+ 
 
     // let altezzaCard = ref.current.offsetHeight;
     // let attualePosizione = top;
@@ -131,9 +138,11 @@ function App() {
     setMenu(newCart);
   };
   const removeToCart = index => {
+
     if (navigator.vibrate) {
       window.navigator.vibrate([100]);
     }
+
     let newCart = menu.map(p => {
       //console.log(index);
       return p.ID === index ? { ...p, q: p.q - 1 } : p;
@@ -164,6 +173,12 @@ function App() {
         console.log("ha descrizione");
       }
     });
+  };
+
+  const toggleInfo = () => {
+    let Newsettings = { ...settings, infoVisible: !settings.infoVisible };
+    console.log(Newsettings);
+    setSettings(Newsettings);
   };
 
   const toggleInfo = () => {
@@ -293,7 +308,9 @@ function App() {
         <h1>
           <img className="logo" alt={settings.title} src={url_logo} />
         </h1>
+
         <h2>{nl2br(settings.motto)}</h2>
+
 
         <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {

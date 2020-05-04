@@ -14,9 +14,11 @@ const Lista = props => {
   let priceCardClass = "";
 
   let fotoImg = "";
+
   let iconaImmagine = "";
   let indicatoreDettagli = "";
   let noteRiga = "";
+
 
   if (product.foto != "" && product.foto.indexOf("https") > -1) {
     fotoImg = (
@@ -28,10 +30,12 @@ const Lista = props => {
         />
       </div>
     );
+
     iconaImmagine = <i className="fa fa-image icona-immagine" />;
     indicatoreDettagli = (
       <i className="fas fa-chevron-down indicatore-dettagli" />
     );
+
   } else if (product.foto != "") {
     fotoImg = (
       <div className="imgContainer">
