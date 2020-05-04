@@ -175,11 +175,7 @@ function App() {
     });
   };
 
-  const toggleInfo = () => {
-    let Newsettings = { ...settings, infoVisible: !settings.infoVisible };
-    console.log(Newsettings);
-    setSettings(Newsettings);
-  };
+
 
   const toggleInfo = () => {
     let Newsettings = { ...settings, infoVisible: !settings.infoVisible };
