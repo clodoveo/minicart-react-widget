@@ -2,9 +2,13 @@ import React from "react";
 
 const MetodoPagamento = props => {
   const { settings, f } = props;
-  return (
+  return settings.contanti_attivo === "0" &&
+    settings.bonifico_attivo === "0" &&
+    settings.contanti_attivo ? (
+    <h3>Al momento non si accettano ordini!</h3>
+  ) : (
     <div>
-      Metodo pagamento:
+      Come vuoi pagare?
       <div className="btn-pagaora">
         {settings.paypal_attivo !== "0" ? (
           <button className="btn" onClick={() => f.goToPaypal()}>

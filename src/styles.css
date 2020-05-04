@@ -1,7 +1,15 @@
 html {
   scroll-behavior: smooth;
+  width: 1px;
+  height: 1px;
+
+  min-width: 100%;
+  *width: 100%;
 }
 
+#root {
+  background-color: #eee;
+}
 h1 {
   margin: 0;
   padding: 30px 0 0;
@@ -21,9 +29,15 @@ h5 {
   font-family: "Nunito", sans-serif;
   text-align: center;
   color: #666;
-  height: 100vh;
-  max-width: 800px;
+
   margin: 0 auto;
+  width: 1px;
+  height: 1px;
+  height: 100vh;
+
+  max-width: 500px;
+  width: 100%;
+  overflow: scroll;
 }
 .hide {
   display: none;
@@ -35,7 +49,7 @@ h5 {
   clear: both;
 }
 .productContainer {
-  padding: 7px 0 150px;
+  padding: 1px 0 150px;
   background: #f9f6f3;
 }
 .productContainer.step-1 {
@@ -118,6 +132,11 @@ h5 {
   top: initial;
 }
 
+.btn.btn-right:disabled,
+.btn.btn-right[disabled] {
+  opacity: 0.5;
+}
+
 .buttons.cardOpen.moreThenZero {
   bottom: 53px;
   top: initial;
@@ -128,13 +147,19 @@ h5 {
   width: 100%;
   padding: 12px 20px;
   border-radius: 50px;
-  font-size: 16px;
+  font-size: 17px;
   border: none;
   background: #fff;
   color: #f05323;
-  margin: 5px;
-  font-weight: 600;
+  margin: 5px 0;
+  font-weight: 800;
   outline: none;
+}
+.btn span {
+  font-size: 14px;
+  font-weight: 300;
+  /* display: block; */
+  padding: 2px 0 0 5px;
 }
 
 .btnConferma {
@@ -164,7 +189,7 @@ h5 {
 }
 
 .appFooter {
-  max-width: 760px;
+  max-width: 460px;
   margin: 0 auto;
   position: fixed;
   bottom: 0px;
@@ -173,16 +198,18 @@ h5 {
   background-color: #f05323;
   color: #fff;
   text-align: left;
-  padding: 20px;
+  padding: 10px 15px;
+  border-top: 1px solid #ffffff50;
 }
 .appFooter.full {
   height: 100vh;
 }
 .appFooter .tot {
   float: left;
+  padding: 0 0 5px 5px;
 }
 .appFooter .tot-price {
-  font-size: 23px;
+  font-size: 17px;
   font-weight: 600;
   padding: 0 0 0 5px;
 }
@@ -191,13 +218,13 @@ h5 {
   height: 45vh;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding-right: 15px;
+  padding-right: 7px;
 }
 .appFooter input,
 .appFooter textarea {
   width: 100%;
   font-size: 15px;
-  padding: 5px;
+  padding: 5px 0 5px 5px;
   border: none;
   border-bottom: 1px solid #ffffff45;
   background: none;
@@ -209,6 +236,22 @@ h5 {
 .appFooter textarea:active {
   border: 1px solid #fff;
   outline: none;
+}
+
+/* caption note */
+input::placeholder {
+  color: #ffffff75;
+  font-size: 14px;
+}
+input::-webkit-input-placeholder {
+  /* Edge */
+  color: #ffffff75;
+  font-size: 14px;
+}
+input::-ms-input-placeholder {
+  /* Internet Explorer 10-11 */
+  color: #ffffff75;
+  font-size: 14px;
 }
 
 label {
@@ -237,7 +280,8 @@ label {
 }
 
 .logo {
-  max-height: 100px;
+  max-height: 120px;
+  max-width: 240px;
 }
 .success {
   text-align: center;
@@ -305,24 +349,38 @@ label {
 }
 
 .info {
-  background-color: #f05323;
+  background-color: #4c4a47;
   color: #fff;
-  margin: 0;
-  padding: 5px 15px;
+  margin: 0 auto;
+  padding: 8px;
   text-align: left;
-  border: 1px solid #f05323;
+  border: 1px solid #4c4a47;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  /* right: 0; */
+  /* left: 0; */
+  /* width: 100%;*/
+  max-width: 100%;
+  max-width: 483px;
+}
+.info strong {
+  font-weight: 700;
+  background: #f05323;
+  border-radius: 4px;
+  padding: 1px 6px;
+  font-size: 11px;
+  margin: 0 3px 0 0;
 }
 .info:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
 
-  padding: 0 0 0 5px;
+  padding: 0 0 0 2px;
+  content: "\f13a";
 
-  content: "\f107";
   float: right;
+  margin-right: 0px;
 }
 .info.infoVisible {
   text-overflow: visible;
@@ -334,6 +392,9 @@ label {
   font-weight: 900;
   content: "\f106";
   float: right;
+}
+.info.infoVisible div div {
+  padding: 10px 0 2px 0;
 }
 .minimo-ordine {
   clear: both;
@@ -400,5 +461,18 @@ label {
 
   color: #fff !important;
   padding: 10px 20px;
+}
+
+.icona-immagine {
+  font-size: 17px;
+  color: #e0c020;
+  padding-left: 5px;
+}
+.indicatore-dettagli {
+  font-size: 14px;
+  color: #ccc;
+  position: absolute;
+  left: calc(50% - 14px);
+  bottom: 10px;
 }
 

@@ -3,28 +3,22 @@ import Indicator from "./Indicator";
 
 const Lista = props => {
   const inputRef = React.createRef(null);
-  const { product, f, baseUrl, addMenuNote } = props;
+  const { product, f, baseUrl, addMenuNote, nl2br } = props;
   let removeBt = "";
   let openClass = "";
 
   const buttonPositionClass = product.descriptionVisible ? "cardOpen" : "";
   const buttonPositionClassMoreThanZero = product.q > 0 ? "moreThenZero" : "";
 
-  if (product.q > 0) {
-    removeBt = (
-      <button className="remove" onClick={() => f.removeToCart(product.ID)}>
-        <i className="fa fa-minus" />
-      </button>
-    );
-    if (!product.descriptionVisible) {
-      openClass = "open";
-    }
-  }
-
   let description = "";
   let priceCardClass = "";
 
   let fotoImg = "";
+
+  let iconaImmagine = "";
+  let indicatoreDettagli = "";
+  let noteRiga = "";
+
 
   if (product.foto != "" && product.foto.indexOf("https") > -1) {
     fotoImg = (
@@ -36,6 +30,12 @@ const Lista = props => {
         />
       </div>
     );
+
+    iconaImmagine = <i className="fa fa-image icona-immagine" />;
+    indicatoreDettagli = (
+      <i className="fas fa-chevron-down indicatore-dettagli" />
+    );
+
   } else if (product.foto != "") {
     fotoImg = (
       <div className="imgContainer">
@@ -46,9 +46,22 @@ const Lista = props => {
         />
       </div>
     );
+    iconaImmagine = <i className="fa fa-image icona-immagine" />;
+    indicatoreDettagli = (
+      <i className="fas fa-chevron-down indicatore-dettagli" />
+    );
   }
 
-  if (product.descriptionVisible && product.descrizione != "") {
+  if (product.descrizione != "") {
+    indicatoreDettagli = (
+      <i className="fas fa-chevron-down indicatore-dettagli" />
+    );
+  }
+
+  if (
+    (product.descriptionVisible && product.descrizione != "") ||
+    (product.descriptionVisible && product.foto != "")
+  ) {
     description = (
       <div className={"description animated fadeIn"}>
         <i
@@ -56,10 +69,38 @@ const Lista = props => {
           onClick={() => f.toggleDescription(product.ID, inputRef)}
         />
         {fotoImg}
-        <div className="descriptionText">{product.descrizione}</div>
+        <div className="descriptionText">{nl2br(product.descrizione)}</div>
       </div>
     );
     priceCardClass = "card";
+    indicatoreDettagli = (
+      <i className="fas fa-chevron-up indicatore-dettagli" />
+    );
+  }
+
+  if (product.q > 0) {
+    removeBt = (
+      <button className="remove" onClick={() => f.removeToCart(product.ID)}>
+        <i className="fa fa-minus" />
+      </button>
+    );
+    if (!product.descriptionVisible) {
+      openClass = "open";
+    }
+
+    noteRiga = (
+      <input
+        className="noteRiga"
+        type="text"
+        placeholder="Inserisci qui richieste speciali..."
+        value={product.noteRiga}
+        name={`noteRiga_${product.ID}`}
+        onChange={e => {
+          addMenuNote(product.ID, e.target.value);
+        }}
+      />
+    );
+    indicatoreDettagli = "";
   }
 
   return (
@@ -71,7 +112,15 @@ const Lista = props => {
         {product.title}
       </p>{" "}
       {description}
-      <div className={"prices " + priceCardClass}>€ {product.prezzo}</div>
+      <div
+        className={"prices " + priceCardClass}
+        onClick={() => f.toggleDescription(product.ID, inputRef)}
+      >
+        € {product.prezzo} {iconaImmagine}
+        <div className="indicatore-dettagli-container">
+          {indicatoreDettagli}
+        </div>
+      </div>
       <div
         className={`buttons ${buttonPositionClass} ${buttonPositionClassMoreThanZero}`}
       >
@@ -87,20 +136,7 @@ const Lista = props => {
           <i className="fa fa-plus" />
         </button>
       </div>
-      {product.q > 0 ? (
-        <input
-          className="noteRiga"
-          type="text"
-          placeholder="Inserisci qui richieste speciali..."
-          value={product.noteRiga}
-          name={`noteRiga_${product.ID}`}
-          onChange={e => {
-            addMenuNote(product.ID, e.target.value);
-          }}
-        />
-      ) : (
-        <></>
-      )}
+      {noteRiga}
       <div className="clearer" />
     </div>
   );
