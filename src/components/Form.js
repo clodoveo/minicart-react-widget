@@ -7,7 +7,10 @@ const Form = props => {
     userdata,
     setUserdata,
     settings,
-    calculatePrice
+    calculatePrice,
+    prezzo,
+    getSpeseSpedizione,
+    modalitaConsegna
   } = props;
 
   return (
@@ -27,7 +30,7 @@ const Form = props => {
             />
           </p>
           <p>
-            <label>Indirizzo:</label>
+            <label>Città e Indirizzo:</label>
             <input
               type="text"
               name="indirizzo"
@@ -73,7 +76,8 @@ const Form = props => {
             />
           </p>
         </div>
-        {parseFloat(settings.importo_minimo) <= calculatePrice() ? (
+        {parseFloat(settings.importo_minimo) <= parseFloat(calculatePrice()) ||
+        modalitaConsegna == "Ritiro in negozio" ? (
           <button
             className="btn btn-right"
             onClick={() => {

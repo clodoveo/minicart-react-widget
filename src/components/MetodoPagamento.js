@@ -8,7 +8,7 @@ const MetodoPagamento = props => {
     <h3>Al momento non si accettano ordini!</h3>
   ) : (
     <div>
-      Metodo pagamento:
+      Come vuoi pagare?
       <div className="btn-pagaora">
         {settings.paypal_attivo !== "0" ? (
           <button className="btn" onClick={() => f.goToPaypal()}>

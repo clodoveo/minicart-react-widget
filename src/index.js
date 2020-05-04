@@ -45,7 +45,7 @@ function App() {
         );
 
         const jsonSettings = await settings.json();
-        console.log(jsonSettings);
+        //console.log(jsonSettings);
         setSettings(jsonSettings);
 
         if (
@@ -91,6 +91,7 @@ function App() {
   const [userdata, setUserdata] = useState(emtyForm);
   const [success, setSuccess] = useState(0);
   const [orderNumber, setOrderNumber] = useState(0);
+  const [modalitaConsegna, setModalitaConsegna] = useState("Ritira in negozio");
 
   navigator.vibrate =
     navigator.vibrate ||
@@ -103,20 +104,20 @@ function App() {
     if (navigator.vibrate) {
       window.navigator.vibrate([50]);
     }
-    let viewportOffset = ref.current.getBoundingClientRect();
-    // these are relative to the viewport, i.e. the window
-    let top = viewportOffset.top;
+    // let viewportOffset = ref.current.getBoundingClientRect();
+    // // these are relative to the viewport, i.e. the window
+    // let top = viewportOffset.top;
 
-    let altezzaCard = ref.current.offsetHeight;
-    let attualePosizione = top;
-    let posizioneBordoInferiore = attualePosizione + altezzaCard;
+    // let altezzaCard = ref.current.offsetHeight;
+    // let attualePosizione = top;
+    // let posizioneBordoInferiore = attualePosizione + altezzaCard;
 
-    let troppoBasso =
-      window.innerHeight - posizioneBordoInferiore < 155 ? true : false;
+    // let troppoBasso =
+    //   window.innerHeight - posizioneBordoInferiore < 155 ? true : false;
 
-    if (troppoBasso) {
-      window.scrollBy(0, 155 - (window.innerHeight - posizioneBordoInferiore));
-    }
+    // if (troppoBasso) {
+    //   window.scrollBy(0, 155 - (window.innerHeight - posizioneBordoInferiore));
+    // }
     let newCart = menu.map(p => {
       //console.log(index);
       return p.ID === index
@@ -126,6 +127,7 @@ function App() {
     });
 
     //console.log(newCart);
+
     setMenu(newCart);
   };
   const removeToCart = index => {
@@ -136,6 +138,7 @@ function App() {
       //console.log(index);
       return p.ID === index ? { ...p, q: p.q - 1 } : p;
     });
+
     setMenu(newCart);
   };
 
@@ -144,6 +147,7 @@ function App() {
       //console.log(index);
       return p.ID === index ? { ...p, noteRiga: val } : p;
     });
+
     setMenu(newCart);
   };
 
@@ -181,28 +185,42 @@ function App() {
   const scrollToRef = ref => window.scrollTo(0, ref.current.offsetTop);
   const calculatePrice = () => {
     //console.log(cart);
-    return menu.reduce(
+    const prezzo = menu.reduce(
       (prezzo, menu) =>
         parseFloat(
           parseFloat(prezzo) + parseFloat(menu.prezzo) * menu.q
         ).toFixed(2),
       0
     );
+    return prezzo;
+  };
+
+  const getSpeseSpedizione = prezzo => {
+    const spedizione =
+      parseFloat(prezzo) > parseFloat(settings.soglia_sped_gratis) &&
+      parseFloat(settings.soglia_sped_gratis) > 0
+        ? 0
+        : parseFloat(settings.spese_spedizione);
+    return spedizione;
   };
   const changeStep = type => {
+    console.log(step, type, settings.data_consegna_attivo);
     let newStep = type ? step + 1 : step - 1;
+    if (step === 2 && settings.data_consegna_attivo == 0 && !type) {
+      newStep = 0;
+    }
     setStep(newStep);
   };
   const goToPaypal = () => {
-    setStep(3);
+    setStep(4);
     setPaymentType("paypal");
   };
   const goTocash = () => {
-    setStep(3);
+    setStep(4);
     setPaymentType("cash");
   };
   const goToBonifico = () => {
-    setStep(3);
+    setStep(4);
     setPaymentType("bonifico");
   };
 
@@ -238,7 +256,8 @@ function App() {
     const res = await postData(baseUrl + "api/ordini/new/" + pv + "/", {
       menu: menu,
       userdata: userdata,
-      paymentType: paymentType
+      paymentType: paymentType,
+      modalitaConsegna: modalitaConsegna
     });
     const result = await res;
     //console.log(result);
@@ -256,11 +275,13 @@ function App() {
   if (settings.info != "") {
     info = settings.infoVisible ? (
       <div className={`info infoVisible`} onClick={() => toggleInfo()}>
-        <strong>INFO:</strong> {settings.info}
+        <div>
+          <strong>INFO</strong> <div>{nl2br(settings.info)}</div>
+        </div>
       </div>
     ) : (
       <div className={`info `} onClick={() => toggleInfo()}>
-        <strong>INFO:</strong> {settings.info}
+        <strong>INFO</strong> {settings.info}
       </div>
     );
   }
@@ -268,11 +289,12 @@ function App() {
   return (
     <div className="App">
       <div className="appContainer">
+        {nl2br(info)}
         <h1>
           <img className="logo" alt={settings.title} src={url_logo} />
         </h1>
         <h2>{nl2br(settings.motto)}</h2>
-        {nl2br(info)}
+
         <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {
             return (
@@ -292,7 +314,6 @@ function App() {
           setSuccess={setSuccess}
           step={step}
           changeStep={changeStep}
-          calculatePrice={calculatePrice}
           settings={settings}
           orderNumber={orderNumber}
           paymentType={paymentType}
@@ -304,7 +325,12 @@ function App() {
           goToBonifico={goToBonifico}
           goTocash={goTocash}
           nl2br={nl2br}
+          getSpeseSpedizione={getSpeseSpedizione}
+          calculatePrice={calculatePrice}
+          modalitaConsegna={modalitaConsegna}
+          setModalitaConsegna={setModalitaConsegna}
         />
+
         {/*<Onboarding settings={settings} menu={menu} />*/}
       </div>
     </div>
