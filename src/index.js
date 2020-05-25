@@ -5,6 +5,7 @@ import "whatwg-fetch";
 import "es6-promise/auto";
 
 import Lista from "./components/Lista";
+import Separatore from "./components/Separatore";
 import Footer from "./components/Footer";
 import Onboarding from "./components/Onboarding";
 
@@ -314,7 +315,9 @@ function App() {
 
         <div className={"productContainer step-" + step}>
           {menu.map((item, index2) => {
-            return (
+            return item.is_section == 1 ? (
+              <Separatore product={item} nl2br={nl2br} />
+            ) : (
               <Lista
                 key={item.ID}
                 product={item}
