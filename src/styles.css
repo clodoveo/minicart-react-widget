@@ -375,8 +375,10 @@ label {
 .info:before {
   font-family: "Font Awesome 5 Free";
   font-weight: 900;
+
   padding: 0 0 0 2px;
   content: "\f13a";
+
   float: right;
   margin-right: 0px;
 }
@@ -399,6 +401,7 @@ label {
   font-size: 20px;
   width: 100%;
 }
+
 .onboarding-overlay {
   background-color: #fff;
   position: fixed;
@@ -459,6 +462,7 @@ label {
   color: #fff !important;
   padding: 10px 20px;
 }
+
 .icona-immagine {
   font-size: 17px;
   color: #e0c020;
@@ -472,7 +476,9 @@ label {
   bottom: 10px;
 }
 
+
 h3.separatoreContent {
   font-weight: 600;
   font-size: 21px;
 }
+
