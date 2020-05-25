@@ -4,7 +4,7 @@ const MetodoPagamento = props => {
   const { settings, f } = props;
   return settings.contanti_attivo === "0" &&
     settings.bonifico_attivo === "0" &&
-    settings.contanti_attivo ? (
+    settings.paypal_attivo==="0"  ? (
     <h3>Al momento non si accettano ordini!</h3>
   ) : (
     <div>

@@ -471,3 +471,8 @@ label {
   left: calc(50% - 14px);
   bottom: 10px;
 }
+
+h3.separatoreContent {
+  font-weight: 600;
+  font-size: 21px;
+}
